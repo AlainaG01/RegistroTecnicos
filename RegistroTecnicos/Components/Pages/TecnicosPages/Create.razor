@@ -1,0 +1,79 @@
+﻿@page "/Tecnicos/Create"
+
+@inject TecnicosService tecnicoService
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+
+@*HTML*@
+
+<PageTitle>Create</PageTitle>
+<EditForm Model="Tecnico" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+    @*Formulario*@
+    <div class="container">
+        <div class="shadow-lg">
+
+            @*Header*@
+            <div class="card-header">
+                <h3>Crear T&eacute;cnico</h3>
+            </div>
+
+            @*Body*@
+            <div class="card-body">
+                <div class="row">
+                    @*Id*@
+                    <div class="col-1 ms-1">
+                        <label class="form-label"><strong>TecnicoId</strong></label>
+                        <InputNumber class="form-control"
+                        @bind-Value="Tecnico.TecnicoId" readonly></InputNumber>
+                    </div>
+
+                    @*Nombre*@
+                    <div class="col-3 ms-5">
+                        <label class="form-label"><strong>Nombres</strong></label>
+                        <InputText class="form-control"
+                        @bind-Value="Tecnico.Nombre"></InputText>
+                    </div>
+
+                    @*SueldoHora*@
+                    <div class="col-3 ms-3">
+                        <label class="form-label"><strong>SueldoHora</strong></label>
+                        <InputNumber class="form-control"
+                        @bind-Value="Tecnico.SueldoHora"></InputNumber>
+                    </div>
+                </div>
+            </div>
+            @*Footer*@
+            <div class="card-footer">
+                <button type="button" class="btn btn-primary" @onclick="Volver">Volver</button>
+                <button type="button" class="btn btn-success" @onclick="Guardar">Guardar</button>
+            </div>
+        </div>
+    </div>
+</EditForm>
+@Mensaje
+
+@code {
+    public Tecnicos Tecnico { get; set; } = new Tecnicos();
+
+    public string Mensaje { get; set; } = string.Empty;
+
+    public void Volver()
+    {
+        navigationManager.NavigateTo("/Tecnicos/Index");   
+    }
+
+    private async Task Guardar()
+    {
+        var crear = await tecnicoService.Guardar(Tecnico);
+
+        if (crear)
+        {
+            Mensaje = "Se ha creado correctamente el tecnico";
+        }
+        else
+        {
+            Mensaje = "No se ha creado correctamente el tecnico";
+        }
+    }
+}
