@@ -1,0 +1,90 @@
+﻿@page "/Tecnicos/Index"
+@using RegistroTecnicos.Models
+@using RegistroTecnicos.Services
+
+@inject TecnicosService tecnicoService
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+
+@*HTML*@
+<PageTitle>Index</PageTitle>
+<div class="container">
+    <div class="shadow-lg">
+
+        @*header*@
+        <div class="card-header text-center">
+            <h3><strong>Listado de T&eacute;cnicos</strong></h3>
+        </div>
+
+        @*body*@
+        <div class="card-body">
+            <div class="row align-items-center">
+                @*boton crear*@
+                <div class="col-3 text-end">
+                    <button type="button" class="btn btn-primary" @onclick="PantallaCrear"> Crear</button>
+                </div>
+            </div>
+            <table class="table table-bordered text-center mt-4">
+                <thead>
+                    <tr>
+                        <th>TecnicoId</th>
+                        <th>Nombre</th>
+                        <th>SueldoHora</th>
+                        <th>Observar</th>
+                        <th>Editar</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var tecnico in ListaTecnicos)
+                    {
+                        <tr>
+                            <td>@tecnico.TecnicoId</td>
+                            <td>@tecnico.Nombre</td>
+                            <td>@tecnico.SueldoHora</td>
+
+                            <td><button type="button" class="btn btn-outline-primary bi bi-eye-fill"
+                                @onclick="()=> PantallaObservar(tecnico.TecnicoId)"></button></td>
+
+                            <td><button type="button" class="btn btn-outline-warning bi bi-pencil-square"
+                                @onclick="()=> PantallaEditar(tecnico.TecnicoId)"></button></td>
+
+                            <td><button type="button" class="btn btn-outline-danger bi bi-trash-fill"
+                                @onclick="()=> PantallaEliminar(tecnico.TecnicoId)"></button></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        @*footer*@
+        <div class="card-footer">
+            <p><strong>Total de T&eacute;cnicos: </strong>@ListaTecnicos.Count</p>
+        </div>
+    </div>
+</div>
+
+@code {
+    public List<Tecnicos> ListaTecnicos { get; set; } = new List<Tecnicos>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        ListaTecnicos = await tecnicoService.Listar(e => e.TecnicoId > 0);
+    }
+
+    public void PantallaCrear() => navigationManager.NavigateTo("/Tecnicos/Create");
+
+    public void PantallaObservar(int id)
+    {
+        navigationManager.NavigateTo($"/Tecnicos/Details/{id}");
+    }
+
+    public void PantallaEditar(int id)
+    {
+        navigationManager.NavigateTo($"/Tecnicos/Edit/{id}");
+    }
+
+    public void PantallaEliminar(int id)
+    {
+        navigationManager.NavigateTo($"/Tecnicos/Delete/{id}");
+    }
+}
