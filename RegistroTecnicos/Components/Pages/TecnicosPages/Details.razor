@@ -1,0 +1,47 @@
+﻿@page "/Tecnicos/Details/{TecnicoId:int}"
+<h3>Details</h3>
+
+@inject TecnicosService tecnicoService
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+
+@*HTML*@
+<PageTitle>Details</PageTitle>
+<div class="container">
+    <div class="shadow-lg">
+        @*Header*@
+        <div class="card-header text-center">
+            <h3><strong>Datos del T&eacute;cnico</strong></h3>
+        </div>
+
+        @*Body*@
+        <div class="card-body">
+            <ul class="mt-5"> 
+                <li><strong>TecnicoId: </strong>@Tecnico.TecnicoId</li>
+                <li><strong>Nombres: </strong>@Tecnico.Nombre</li>
+                <li><strong>SueldoHora: $</strong>@Tecnico.SueldoHora</li>
+            </ul>
+        </div>
+        @*Footer*@
+        <div class="card-footer text-center">
+            <button type="button" class="btn btn-primary" @onclick="Volver">Volver</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int TecnicoId { get; set; }
+
+    public Tecnicos Tecnico { get; set; } = new Tecnicos();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Tecnico = await tecnicoService.Buscar(TecnicoId);
+    }
+
+    public void Volver()
+    {
+        navigationManager.NavigateTo("Tecnicos/Index");
+    }
+}
