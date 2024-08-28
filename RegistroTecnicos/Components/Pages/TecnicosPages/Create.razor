@@ -33,6 +33,7 @@
                         <label class="form-label"><strong>Nombres</strong></label>
                         <InputText class="form-control"
                         @bind-Value="Tecnico.Nombre"></InputText>
+                        <ValidationMessage For="(()=> Tecnico.Nombre)" />
                     </div>
 
                     @*SueldoHora*@
@@ -40,6 +41,7 @@
                         <label class="form-label"><strong>SueldoHora</strong></label>
                         <InputNumber class="form-control"
                         @bind-Value="Tecnico.SueldoHora"></InputNumber>
+                        <ValidationMessage For="(()=> Tecnico.SueldoHora)" />
                     </div>
                 </div>
             </div>
@@ -65,6 +67,12 @@
 
     private async Task Guardar()
     {
+        if(await Validar())
+        {
+            Mensaje = "Ya existe un Tecnico con este nombre";
+            return;
+        }
+
         var crear = await tecnicoService.Guardar(Tecnico);
 
         if (crear)
@@ -75,5 +83,11 @@
         {
             Mensaje = "No se ha creado correctamente el tecnico";
         }
+    }
+
+    private async Task<bool> Validar()
+    {
+        var existe = await tecnicoService.ExisteTecnico(Tecnico.TecnicoId, Tecnico.Nombre);
+        return existe;
     }
 }
