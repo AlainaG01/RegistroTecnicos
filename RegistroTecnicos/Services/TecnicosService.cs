@@ -58,11 +58,10 @@ public class TecnicosService
         return await _contexto.Tecnicos.AsNoTracking().Where(criterio).ToListAsync();
     }
 
-    public async Task<bool> ExisteTecnico(int tecnicoId, string nombres, double sueldoHora)
+    public async Task<bool> ExisteTecnico(int tecnicoId, string nombres)
     {
         return await _contexto.Tecnicos.AnyAsync(e => e.TecnicoId != tecnicoId
-        && e.Nombre.ToLower().Equals(nombres.ToLower()) 
-        || e.SueldoHora.Equals(sueldoHora));
+        && e.Nombre.ToLower().Equals(nombres.ToLower()));
     }
 }
  
