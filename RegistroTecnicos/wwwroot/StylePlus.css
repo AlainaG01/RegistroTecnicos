@@ -1,0 +1,25 @@
+﻿.container{
+    background-color: #82a0bc;
+    padding: 15px;
+}
+
+.content{
+    padding: 24px, 32px, 17.6px, 17.6px;
+    background-color: #82a0bc;
+}
+
+.card-header,
+.card-footer{
+    background-color: #a7cced;
+}
+
+.card-body{
+    background-color: #edede9;
+}
+
+.form-select,
+.form-control{
+    background-color:#a7cced;
+    border: 2px solid #545e75;
+    border-radius: 4px;
+}
