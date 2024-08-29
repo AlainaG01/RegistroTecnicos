@@ -17,9 +17,48 @@
 
         @*body*@
         <div class="card-body">
+
+            @*labels*@
+            <div class="row">
+
+                @*Filtrar por*@
+                <div class="col-3">
+                    <label class="col-form-label"><strong>Filtrar por</strong></label>
+                </div>
+
+                @*ValorFiltro*@
+                <div class="col-4">
+                    <label class="col-form-label"><strong>B&uacute;squeda</strong></label>
+                </div>
+            </div>
+
+            @*Inputs y botones*@
             <div class="row align-items-center">
-                @*boton crear*@
-                <div class="col-3 text-end">
+                @*filtro*@
+                <div class="col-3">
+                    <InputSelect class="form-select" @bind-Value="Filtro">
+                        <option value="" selected disabled>Elija una opci&oacute;n</option>
+                        <option value="Id">Id</option>
+                        <option value="Nombre">Nombre</option>
+                        <option value="SueldoHora">SueldoHora</option>
+                    </InputSelect>
+                </div>
+
+                @*Busqueda*@
+                <div class="col-4">
+                    <div class="input-group">
+                        <input class="form-control" @bind="ValorFiltro" placeholder="Buscar" />
+                        <button type="button" class="btn btn-outline-primary bi bi-search" @onclick="Buscar"></button>
+                    </div>
+                </div>
+
+                @*Restablecer*@
+                <div class="col-auto">
+                    <button type="button" class="btn btn-outline-secondary bi bi-arrow-clockwise" @onclick="Restablecer"></button>
+                </div>
+
+                @*Crear*@
+                <div class="col-3">
                     <button type="button" class="btn btn-primary" @onclick="PantallaCrear"> Crear</button>
                 </div>
             </div>
@@ -65,6 +104,9 @@
 @code {
     public List<Tecnicos> ListaTecnicos { get; set; } = new List<Tecnicos>();
 
+    public string Filtro { get; set; } = string.Empty;
+    public string ValorFiltro { get; set; } = string.Empty;
+
     protected override async Task OnInitializedAsync()
     {
         ListaTecnicos = await tecnicoService.Listar(e => e.TecnicoId > 0);
@@ -85,5 +127,32 @@
     public void PantallaEliminar(int id)
     {
         navigationManager.NavigateTo($"/Tecnicos/Delete/{id}");
+    }
+
+    private async Task Buscar()
+    {
+        if (ValorFiltro.Trim() != "")
+        {
+            if (Filtro == "Id" && int.TryParse(ValorFiltro, out int tecnicoId))
+                ListaTecnicos = await tecnicoService.Listar(e => e.TecnicoId == tecnicoId);
+            else if (Filtro == "Nombre")
+                ListaTecnicos = await tecnicoService.Listar(e => e.Nombre.ToLower().Contains(ValorFiltro.ToLower()));
+            else if (Filtro == "SueldoHora")
+            {
+                if (double.TryParse(ValorFiltro, out double sueldoHora))
+                {
+                    ListaTecnicos = await tecnicoService.Listar(e => e.SueldoHora == sueldoHora);
+                }
+            }
+        }
+        else
+            ListaTecnicos = await tecnicoService.Listar(e => e.TecnicoId > 0);
+    }
+
+    private async Task Restablecer()
+    {
+        ListaTecnicos = await tecnicoService.Listar(e => e.TecnicoId > 0);
+        Filtro = string.Empty;
+        ValorFiltro = string.Empty;
     }
 }
