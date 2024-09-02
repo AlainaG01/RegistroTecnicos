@@ -57,10 +57,7 @@
                     <button type="button" class="btn btn-outline-secondary bi bi-arrow-clockwise" @onclick="Restablecer"></button>
                 </div>
 
-                @*Crear*@
-                <div class="col-3">
-                    <button type="button" class="btn btn-primary" @onclick="PantallaCrear"> Crear</button>
-                </div>
+                
             </div>
             <table class="table table-bordered text-center mt-4">
                 <thead>
@@ -97,6 +94,10 @@
         @*footer*@
         <div class="card-footer">
             <p><strong>Total de T&eacute;cnicos: </strong>@ListaTecnicos.Count</p>
+            @*Crear*@
+            <div class="col-3">
+                <button type="button" class="btn btn-primary" @onclick="PantallaCrear"> Crear</button>
+            </div>
         </div>
     </div>
 </div>
