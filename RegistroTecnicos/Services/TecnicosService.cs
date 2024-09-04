@@ -29,7 +29,7 @@ public class TecnicosService
     {
         _contexto.Update(tecnico);
         var modificado = await _contexto.SaveChangesAsync() > 0;
-        _contexto.Entry(tecnico).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+        _contexto.Entry(tecnico).State = Microsoft.EntityFrameworkCore.EntityState.Modified; //esta linea no va
         return modificado;
     }
 
@@ -61,7 +61,7 @@ public class TecnicosService
     public async Task<bool> ExisteTecnico(int tecnicoId, string nombres)
     {
         return await _contexto.Tecnicos.AnyAsync(e => e.TecnicoId != tecnicoId
-        && e.Nombre.ToLower().Equals(nombres.ToLower()));
+        && e.Nombres.ToLower().Equals(nombres.ToLower()));
     }
 }
  

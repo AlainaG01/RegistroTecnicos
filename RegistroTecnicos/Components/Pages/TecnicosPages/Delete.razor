@@ -20,7 +20,7 @@
             </div>
             <ul>
                 <li><strong>TecnicoId: </strong>@Tecnico.TecnicoId</li>
-                <li><strong>Nombres: </strong>@Tecnico.Nombre</li>
+                <li><strong>Nombres: </strong>@Tecnico.Nombres</li>
                 <li><strong>SueldoHora: </strong>@Tecnico.SueldoHora</li>
             </ul>
         </div>
@@ -51,11 +51,11 @@
         var eliminado = await tecnicoService.Eliminar(Tecnico);
         if (eliminado)
         {
-            Mensaje = $"El estudiante {Tecnico.Nombre} ha sido eliminado correctamente";
+            Mensaje = $"El tecnico {Tecnico.Nombres} ha sido eliminado correctamente";
         }
         else
         {
-            Mensaje = "No se ha podido eliminar el estudiante";
+            Mensaje = "No se ha podido eliminar el tecnico";
         }
     }
 

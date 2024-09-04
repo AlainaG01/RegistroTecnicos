@@ -75,7 +75,7 @@
                     {
                         <tr>
                             <td>@tecnico.TecnicoId</td>
-                            <td>@tecnico.Nombre</td>
+                            <td>@tecnico.Nombres</td>
                             <td>@tecnico.SueldoHora</td>
 
                             <td><button type="button" class="btn btn-outline-primary bi bi-eye-fill"
@@ -136,8 +136,8 @@
         {
             if (Filtro == "Id" && int.TryParse(ValorFiltro, out int tecnicoId))
                 ListaTecnicos = await tecnicoService.Listar(e => e.TecnicoId == tecnicoId);
-            else if (Filtro == "Nombre")
-                ListaTecnicos = await tecnicoService.Listar(e => e.Nombre.ToLower().Contains(ValorFiltro.ToLower()));
+            else if (Filtro == "Nombres")
+                ListaTecnicos = await tecnicoService.Listar(e => e.Nombres.ToLower().Contains(ValorFiltro.ToLower()));
             else if (Filtro == "SueldoHora")
             {
                 if (double.TryParse(ValorFiltro, out double sueldoHora))

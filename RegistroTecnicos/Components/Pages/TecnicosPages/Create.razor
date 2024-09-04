@@ -32,8 +32,8 @@
                     <div class="col-3 ms-5">
                         <label class="form-label"><strong>Nombres</strong></label>
                         <InputText class="form-control"
-                        @bind-Value="Tecnico.Nombre"></InputText>
-                        <ValidationMessage For="(()=> Tecnico.Nombre)" />
+                        @bind-Value="Tecnico.Nombres"></InputText>
+                        <ValidationMessage For="(()=> Tecnico.Nombres)" />
                     </div>
 
                     @*SueldoHora*@
@@ -87,7 +87,7 @@
 
     private async Task<bool> Validar()
     {
-        var existe = await tecnicoService.ExisteTecnico(Tecnico.TecnicoId, Tecnico.Nombre);
+        var existe = await tecnicoService.ExisteTecnico(Tecnico.TecnicoId, Tecnico.Nombres);
         return existe;
     }
 }
