@@ -42,7 +42,7 @@ public class TecnicosService
 
     public async Task<bool> Eliminar(int tecnicoId)
     {
-        return await _contexto.Tecnicos.AsNoTracking().
+        return await _contexto.Tecnicos.
             Where(e => e.TecnicoId == tecnicoId).ExecuteDeleteAsync() > 0;
     }
 
