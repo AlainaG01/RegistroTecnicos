@@ -29,7 +29,6 @@ public class TecnicosService
     {
         _contexto.Update(tecnico);
         var modificado = await _contexto.SaveChangesAsync() > 0;
-        _contexto.Entry(tecnico).State = Microsoft.EntityFrameworkCore.EntityState.Modified; //esta linea no va
         return modificado;
     }
 
