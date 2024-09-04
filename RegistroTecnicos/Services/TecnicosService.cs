@@ -40,10 +40,10 @@ public class TecnicosService
             return await Modificar(tecnico);
     }
 
-    public async Task<bool> Eliminar(Tecnicos tecnico)
+    public async Task<bool> Eliminar(int tecnicoId)
     {
         return await _contexto.Tecnicos.AsNoTracking().
-            Where(e => e.TecnicoId == tecnico.TecnicoId).ExecuteDeleteAsync() > 0;
+            Where(e => e.TecnicoId == tecnicoId).ExecuteDeleteAsync() > 0;
     }
 
     public async Task<Tecnicos> Buscar(int id)

@@ -48,7 +48,7 @@
 
     private async Task Eliminar()
     {
-        var eliminado = await tecnicoService.Eliminar(Tecnico);
+        var eliminado = await tecnicoService.Eliminar(Tecnico.TecnicoId);
         if (eliminado)
         {
             Mensaje = $"El tecnico {Tecnico.Nombres} ha sido eliminado correctamente";
