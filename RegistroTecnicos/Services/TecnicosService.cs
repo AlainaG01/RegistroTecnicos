@@ -14,18 +14,18 @@ public class TecnicosService
         _contexto = contexto;
     }
 
-    public async Task<bool> Existe(int tecnicoId)
+    private async Task<bool> Existe(int tecnicoId)
     {
         return await _contexto.Tecnicos.AnyAsync(e => e.TecnicoId ==  tecnicoId);
     }
 
-    public async Task<bool> Insertar(Tecnicos tecnico)
+    private async Task<bool> Insertar(Tecnicos tecnico)
     {
         _contexto.Tecnicos.Add(tecnico);
         return await _contexto.SaveChangesAsync() > 0;
     }
 
-    public async Task<bool> Modificar(Tecnicos tecnico)
+    private async Task<bool> Modificar(Tecnicos tecnico)
     {
         _contexto.Update(tecnico);
         var modificado = await _contexto.SaveChangesAsync() > 0;
