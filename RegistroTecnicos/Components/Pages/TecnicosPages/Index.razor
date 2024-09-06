@@ -40,7 +40,7 @@
                         <option value="" selected disabled>Elija una opci&oacute;n</option>
                         <option value="Id">Id</option>
                         <option value="Nombres">Nombres</option>
-                        <option value="SueldoHora">SueldoHora</option>
+                        <option value="Descripcion">Descripcion</option>
                     </InputSelect>
                 </div>
 
@@ -64,6 +64,7 @@
                     <tr>
                         <th>TecnicoId</th>
                         <th>Nombres</th>
+                        <th>Descripci&oacute;n</th>
                         <th>SueldoHora</th>
                         <th>Observar</th>
                         <th>Editar</th>
@@ -76,6 +77,7 @@
                         <tr>
                             <td>@tecnico.TecnicoId</td>
                             <td>@tecnico.Nombres</td>
+                            <td>@tecnico.Descripcion</td>
                             <td>@tecnico.SueldoHora</td>
 
                             <td><button type="button" class="btn btn-outline-primary bi bi-eye-fill"
@@ -138,12 +140,9 @@
                 ListaTecnicos = await tecnicoService.Listar(e => e.TecnicoId == tecnicoId);
             else if (Filtro == "Nombres")
                 ListaTecnicos = await tecnicoService.Listar(e => e.Nombres.ToLower().Contains(ValorFiltro.ToLower()));
-            else if (Filtro == "SueldoHora")
+            else if (Filtro == "Descripcion")
             {
-                if (double.TryParse(ValorFiltro, out double sueldoHora))
-                {
-                    ListaTecnicos = await tecnicoService.Listar(e => e.SueldoHora == sueldoHora);
-                }
+                ListaTecnicos = await tecnicoService.Listar(e => e.Descripcion.ToLower().Contains(ValorFiltro.ToLower()));
             }
         }
         else
