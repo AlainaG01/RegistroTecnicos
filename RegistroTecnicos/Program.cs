@@ -15,6 +15,7 @@ builder.Services.AddDbContext<Contexto>(o => o.UseSqlite(ConStr));
 
 //Inyeccion del servicio
 builder.Services.AddScoped<TecnicosService>();
+builder.Services.AddScoped<TiposTecnicosService>();
 
 var app = builder.Build();
 
