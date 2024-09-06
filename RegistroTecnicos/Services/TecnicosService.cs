@@ -49,7 +49,7 @@ public class TecnicosService
     public async Task<Tecnicos> Buscar(int id)
     {
         return await _contexto.Tecnicos
-            .AsNoTracking().FirstOrDefaultAsync(e => e.TecnicoId == id);
+            .FirstOrDefaultAsync(e => e.TecnicoId == id);
     }
 
     public async Task<List<Tecnicos>> Listar(Expression<Func<Tecnicos, bool>> criterio)
