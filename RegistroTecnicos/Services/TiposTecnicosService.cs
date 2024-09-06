@@ -42,7 +42,7 @@ public class TiposTecnicosService(Contexto contexto)
 
     public async Task<TiposTecnicos> Buscar(int id)
     {
-        return await _contexto.TiposTecnicos.AsNoTracking().FirstOrDefaultAsync(e => e.TiposTecnicosId == id);
+        return await _contexto.TiposTecnicos.FirstOrDefaultAsync(e => e.TiposTecnicosId == id);
     }
 
     public async Task<List<TiposTecnicos>> Listar(Expression<Func<TiposTecnicos, bool>> criterio)
