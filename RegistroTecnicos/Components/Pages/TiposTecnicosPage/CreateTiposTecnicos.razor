@@ -1,0 +1,90 @@
+﻿@page "/Tecnicos/TiposTecnicos/Create"
+
+@inject TiposTecnicosService tiposTecnicosService
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+
+@*HTML*@
+
+<PageTitle>Create</PageTitle>
+<EditForm Model="TipoTecnico" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+    @*Formulario*@
+    <div class="container">
+        <div class="shadow-lg">
+
+            @*Header*@
+            <div class="card-header">
+                <h3>Crear Tipo T&eacute;cnico</h3>
+            </div>
+
+            @*Body*@
+            <div class="card-body">
+                <div class="row">
+                    @*Id*@
+                    <div class="col-1 ms-1">
+                        <label class="form-label"><strong>TipoTecnicoId</strong></label>
+                        <InputNumber class="form-control" @bind-Value="TipoTecnico.TiposTecnicosId" readonly></InputNumber>
+                    </div>
+
+                    @*Descripcion*@
+                    <div class="col-3 ms-5">
+                        <label class="form-label"><strong>Descripci&oacute;n</strong></label>
+                        <InputText class="form-control"
+                                   @bind-Value="TipoTecnico.Descripcion"></InputText>
+                        <ValidationMessage For="(()=> TipoTecnico.Descripcion)" />
+                    </div>
+            </div>
+            @*Footer*@
+            <div class="card-footer">
+                <button type="button" class="btn btn-primary" @onclick="Volver">Volver</button>
+                <button type="button" class="btn btn-success" @onclick="Guardar">Guardar</button>
+            </div>
+        </div>
+        </div>
+    </div>
+</EditForm>
+@Mensaje
+
+@code {
+    public TiposTecnicos TipoTecnico { get; set; } = new TiposTecnicos();
+    public List<TiposTecnicos> ListaTiposTecnicos { get; set; } = new List<TiposTecnicos>();
+
+    public string Mensaje { get; set; } = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        ListaTiposTecnicos = await tiposTecnicosService.Listar(e => e.TiposTecnicosId > 0);
+    }
+
+    public void Volver()
+    {
+        navigationManager.NavigateTo("/Tecnicos/TiposTecnicos/Index");
+    }
+
+    private async Task Guardar()
+    {
+        if (await Validar())
+        {
+            Mensaje = "Ya existe un tipo Tecnico con este nombre";
+            return;
+        }
+
+        var crear = await tiposTecnicosService.Guardar(TipoTecnico);
+
+        if (crear)
+        {
+            Mensaje = "Se ha creado correctamente";
+        }
+        else
+        {
+            Mensaje = "No se ha creado correctamente";
+        }
+    }
+
+    private async Task<bool> Validar()
+    {
+        var existe = await tiposTecnicosService.ExisteTipo(TipoTecnico.TiposTecnicosId, TipoTecnico.Descripcion);
+        return existe;
+    }
+}
