@@ -1,6 +1,7 @@
 ﻿@page "/Tecnicos/Create"
 
 @inject TecnicosService tecnicoService
+@inject TiposTecnicosService tiposTecnicosService
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer
 
@@ -44,6 +45,17 @@
                         <ValidationMessage For="(()=> Tecnico.SueldoHora)" />
                     </div>
                 </div>
+                @*Tipo Tecnico*@
+                <div class="col-5 ms-3">
+                    <label class="form-label"><strong>Descripci&oacute;n</strong></label>
+                    <InputSelect class="form-select" @bind-Value="Tecnico.Descripcion">
+                        <option ="" selected disabled>Elija una opci&oacute;n</option>
+                        @foreach (var tipoTecnico in ListaTiposTecnicos)
+                        {
+                            <option value="@tipoTecnico.Descripcion">@tipoTecnico.Descripcion</option>
+                        }
+                    </InputSelect>
+                </div>
             </div>
             @*Footer*@
             <div class="card-footer">
@@ -57,8 +69,15 @@
 
 @code {
     public Tecnicos Tecnico { get; set; } = new Tecnicos();
+    //public TiposTecnicos TiposTecnicos { get; set; } = new TiposTecnicos();
+    public List<TiposTecnicos> ListaTiposTecnicos { get; set; } = new List<TiposTecnicos>();
 
     public string Mensaje { get; set; } = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        ListaTiposTecnicos = await tiposTecnicosService.Listar(e => e.TiposTecnicosId > 0);
+    }
 
     public void Volver()
     {
