@@ -12,6 +12,9 @@ public class Tecnicos
     public string? Nombres { get; set; }
 
     [Required(ErrorMessage = "Campo obligatorio")]
+    public string? Descripcion { get; set; }
+
+    [Required(ErrorMessage = "Campo obligatorio")]
     [RegularExpression(@"^\d+(\.\d+)?$", ErrorMessage = "Solo se permiten numeros enteros o decimales")]
     public double SueldoHora { get; set; }
 }
