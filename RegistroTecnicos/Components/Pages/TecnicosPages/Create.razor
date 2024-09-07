@@ -20,17 +20,17 @@
             </div>
 
             @*Body*@
-            <div class="card-body">
-                <div class="row">
+            <div class="card-body d-flex flex-column align-items-center justify-content-center text-lg-center">
+                
                     @*Id*@
-                    <div class="col-1 ms-1">
+                    <div class="col-4 ms-3">
                         <label class="form-label"><strong>TecnicoId</strong></label>
                         <InputNumber class="form-control"
                         @bind-Value="Tecnico.TecnicoId" readonly></InputNumber>
                     </div>
 
                     @*Nombre*@
-                    <div class="col-3 ms-5">
+                    <div class="col-4 ms-3">
                         <label class="form-label"><strong>Nombres</strong></label>
                         <InputText class="form-control"
                         @bind-Value="Tecnico.Nombres"></InputText>
@@ -38,15 +38,14 @@
                     </div>
 
                     @*SueldoHora*@
-                    <div class="col-3 ms-3">
+                    <div class="col-4 ms-3">
                         <label class="form-label"><strong>SueldoHora</strong></label>
                         <InputNumber class="form-control"
                         @bind-Value="Tecnico.SueldoHora"></InputNumber>
                         <ValidationMessage For="(()=> Tecnico.SueldoHora)" />
                     </div>
-                </div>
                 @*Tipo Tecnico*@
-                <div class="col-5 ms-3">
+                <div class="col-4 ms-3">
                     <label class="form-label"><strong>Descripci&oacute;n</strong></label>
                     <InputSelect class="form-select" @bind-Value="Tecnico.Descripcion">
                         <option ="" selected disabled>Elija una opci&oacute;n</option>
@@ -58,7 +57,7 @@
                 </div>
             </div>
             @*Footer*@
-            <div class="card-footer">
+            <div class="card-footer text-center">
                 <button type="button" class="btn btn-primary bi bi-arrow-90deg-left" @onclick="Volver"></button>
                 <button type="button" class="btn btn-success bi bi-floppy-fill" @onclick="Guardar"></button>
             </div>
