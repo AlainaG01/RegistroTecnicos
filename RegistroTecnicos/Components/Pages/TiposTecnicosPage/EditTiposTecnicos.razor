@@ -20,15 +20,15 @@
 
             @*Body*@
             <div class="card-body">
-                <div class="row">
+                <div class="d-flex flex-column align-items-center justify-content-center text-lg-center">
                     @*Id*@
-                    <div class="col-3 ms-1">
+                    <div class="col-4 ms-3">
                         <label class="form-label"><strong>TipoTecnicoId</strong></label>
                         <InputNumber class="form-control" @bind-Value="TipoTecnico.TiposTecnicosId" readonly></InputNumber>
                     </div>
 
                     @*Descripcion*@
-                    <div class="col-5 ms-2">
+                    <div class="col-4 ms-3">
                         <label class="form-label"><strong>Descripci&oacute;n</strong></label>
                         <InputText class="form-control"
                                    @bind-Value="TipoTecnico.Descripcion"></InputText>
