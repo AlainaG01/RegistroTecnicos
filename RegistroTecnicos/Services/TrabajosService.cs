@@ -60,10 +60,9 @@ public class TrabajosService
         return await _contexto.Trabajos.Include(e => e.Tecnico).Include(e => e.Cliente).AsNoTracking().Where(criterio).ToListAsync();
     }
 
-    public async Task<bool> ExisteTrabajo(int trabajoId, string descripcion)
+    public async Task<bool> ExisteTrabajo(int trabajoId)
     {
         return await _contexto.Trabajos
-            .AnyAsync(e => e.TrabajoId !=  trabajoId 
-            && e.Descripcion.ToLower().Equals(descripcion.ToLower()));
+            .AnyAsync(e => e.TrabajoId !=  trabajoId);
     }
 }
