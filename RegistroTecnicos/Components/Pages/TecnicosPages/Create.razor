@@ -10,6 +10,7 @@
 <PageTitle>Create</PageTitle>
 <EditForm Model="Tecnico" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
+    <ValidationSummary />
     @*Formulario*@
     <div class="container">
         <div class="shadow-lg">
@@ -47,11 +48,11 @@
                 @*Tipo Tecnico*@
                 <div class="col-4 ms-3">
                     <label class="form-label"><strong>Descripci&oacute;n</strong></label>
-                    <InputSelect class="form-select" @bind-Value="Tecnico.Descripcion">
+                    <InputSelect class="form-select" @bind-Value="Tecnico.TiposTecnicosId">
                         <option ="" selected disabled>Elija una opci&oacute;n</option>
                         @foreach (var tipoTecnico in ListaTiposTecnicos)
                         {
-                            <option value="@tipoTecnico.Descripcion">@tipoTecnico.Descripcion</option>
+                            <option value="@tipoTecnico.TiposTecnicosId">@tipoTecnico.Descripcion</option>
                         }
                     </InputSelect>
                 </div>
@@ -59,7 +60,8 @@
             @*Footer*@
             <div class="card-footer text-center">
                 <button type="button" class="btn btn-primary bi bi-arrow-90deg-left" @onclick="Volver"></button>
-                <button type="button" class="btn btn-success bi bi-floppy-fill" @onclick="Guardar"></button>
+                <button type="submit" class="btn btn-success bi bi-floppy-fill">Guardar</button>
+
             </div>
         </div>
     </div>
