@@ -49,12 +49,14 @@ public class TecnicosService
     public async Task<Tecnicos> Buscar(int id)
     {
         return await _contexto.Tecnicos
+            .Include(t => t.TipoTecnico)
+            .AsNoTracking()
             .FirstOrDefaultAsync(e => e.TecnicoId == id);
     }
 
     public async Task<List<Tecnicos>> Listar(Expression<Func<Tecnicos, bool>> criterio)
     {
-        return await _contexto.Tecnicos.AsNoTracking().Where(criterio).ToListAsync();
+        return await _contexto.Tecnicos.Include(t => t.TipoTecnico).AsNoTracking().Where(criterio).ToListAsync();
     }
 
     public async Task<bool> ExisteTecnico(int tecnicoId, string nombres)
