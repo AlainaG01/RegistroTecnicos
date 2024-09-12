@@ -1,0 +1,67 @@
+﻿@page "/Tecnicos/Clientes/Delete/{ClienteId:int}"
+
+@inject ClientesService clientesService
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+
+@*HTML*@
+<PageTitle>Delete</PageTitle>
+<div class="container">
+    <div class="shadow-lg">
+        @*header*@
+        <div class="card-header text-center">
+            <h3><strong>Eliminar Cliente</strong></h3>
+        </div>
+
+        @*body*@
+        <div class="card-body">
+            <div class="text-center">
+                <h4><strong>¿Desea eliminar este Cliente?</strong></h4>
+            </div>
+            <ul>
+                <li><strong>TecnicoId: </strong>@Cliente.ClienteId</li>
+                <li><strong>Nombres: </strong>@Cliente.Nombres</li>
+                <li><strong>WhatsApp: </strong>@Cliente.WhatsApp</li>
+            </ul>
+        </div>
+    </div>
+    @*Footer*@
+    <div class="card-footer text-center">
+        <button type="button" class="btn btn-primary bi bi-arrow-90deg-left" @onclick="Volver"></button>
+        <button type="submit" class="btn btn-danger bi bi-trash" @onclick="Eliminar"></button>
+    </div>
+</div>
+
+@Mensaje
+
+@code {
+    [Parameter]
+    public int ClienteId { get; set; }
+
+    public Clientes Cliente { get; set; } = new Clientes();
+    public string Mensaje { get; set; } = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Cliente = await clientesService.Buscar(ClienteId);
+    }
+
+    private async Task Eliminar()
+    {
+        var eliminado = await clientesService.Eliminar(Cliente.ClienteId);
+
+        if (eliminado)
+        {
+            Mensaje = $"El cliente {Cliente.Nombres} ha sido eliminado";
+        }
+        else
+        {
+            Mensaje = "El cliente no ha sido eliminado correctamente";
+        }
+    }
+
+    public void Volver()
+    {
+        navigationManager.NavigateTo("/Tecnicos/Clientes/Index");
+    }
+}
