@@ -1,0 +1,155 @@
+﻿@page "/Tecnicos/Clientes/Index"
+
+@inject ClientesService clientesService
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+
+@*HTML*@
+<PageTitle>Index</PageTitle>
+<div class="container">
+    <div class="shadow-lg">
+
+        @*header*@
+        <div class="card-header text-center">
+            <h3><strong>Listado de Clientes</strong></h3>
+        </div>
+
+        @*body*@
+        <div class="card-body">
+
+            @*labels*@
+            <div class="row">
+
+                @*Filtrar por*@
+                <div class="col-3">
+                    <label class="col-form-label"><strong>Filtrar por</strong></label>
+                </div>
+
+                @*ValorFiltro*@
+                <div class="col-4">
+                    <label class="col-form-label"><strong>B&uacute;squeda</strong></label>
+                </div>
+            </div>
+
+            @*Inputs y botones*@
+            <div class="row align-items-center">
+                @*filtro*@
+                <div class="col-3">
+                    <InputSelect class="form-select" @bind-Value="Filtro">
+                        <option value="" selected disabled>Elija una opci&oacute;n</option>
+                        <option value="Nombres">Nombres</option>
+                    </InputSelect>
+                </div>
+
+                @*Busqueda*@
+                <div class="col-4">
+                    <div class="input-group">
+                        <input class="form-control" @bind="ValorFiltro" placeholder="Buscar" />
+                        <button type="button" class="btn btn-outline-primary bi bi-search" @onclick="Buscar"></button>
+                    </div>
+                </div>
+
+                @*Restablecer*@
+                <div class="col-auto">
+                    <button type="button" class="btn btn-outline-secondary bi bi-arrow-clockwise" @onclick="Restablecer"></button>
+                </div>
+
+
+            </div>
+            <table class="table table-bordered text-center mt-4">
+                <thead>
+                    <tr>
+                        <th>ClienteId</th>
+                        <th>Nombres</th>
+                        <th>WhatsApp</th>
+                        <th>Observar</th>
+                        <th>Editar</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var cliente in ListaClientes)
+                    {
+                        <tr>
+                            <td>@cliente.ClienteId</td>
+                            <td>@cliente.Nombres</td>
+                            <td>@cliente.WhatsApp</td>
+
+                            <td>
+                                <button type="button" class="btn btn-outline-primary bi bi-eye-fill"
+                                        @onclick="()=> PantallaObservar(cliente.ClienteId)"></button>
+                            </td>
+
+                            <td>
+                                <button type="button" class="btn btn-outline-warning bi bi-pencil-square"
+                                        @onclick="()=> PantallaModificar(cliente.ClienteId)"></button>
+                            </td>
+
+                            <td>
+                                <button type="button" class="btn btn-outline-danger bi bi-trash-fill"
+                                        @onclick="()=> PantallaEliminar(cliente.ClienteId)"></button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        @*footer*@
+        <div class="card-footer">
+            <p><strong>Total de Clientes: </strong>@ListaClientes.Count</p>
+            @*Crear*@
+            <div class="col-3">
+                <button type="button" class="btn btn-primary" @onclick="PantallaCrear"> Crear</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    public List<Clientes> ListaClientes { get; set; } = new List<Clientes>();
+
+    public string Filtro { get; set; } = string.Empty;
+    public string ValorFiltro { get; set; } = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        ListaClientes = await clientesService.Listar(e => e.ClienteId > 0);
+    }
+
+    public void PantallaCrear() => navigationManager.NavigateTo("/Tecnicos/Clientes/Create");
+
+    public void PantallaObservar(int id)
+    {
+        navigationManager.NavigateTo($"/Tecnicos/Clientes/Details/{id}");
+    }
+
+    public void PantallaModificar(int id)
+    {
+        navigationManager.NavigateTo($"/Tecnicos/Clientes/Edit/{id}");
+    }
+
+    public void PantallaEliminar(int id)
+    {
+        navigationManager.NavigateTo($"/Tecnicos/Clientes/Delete/{id}");
+    }
+
+    private async Task Buscar()
+    {
+        if(ValorFiltro.Trim() != "")
+        {
+            if (Filtro == "Nombres")
+                ListaClientes = await clientesService.Listar(e => e.Nombres.ToLower().Contains(ValorFiltro.ToLower()));
+        }
+        else
+        {
+            ListaClientes = await clientesService.Listar(e => e.ClienteId > 0);
+        }
+    }
+
+    private async Task Restablecer()
+    {
+        ListaClientes = await clientesService.Listar(e => e.ClienteId > 0);
+        Filtro = string.Empty;
+        ValorFiltro = string.Empty;
+    }
+}
