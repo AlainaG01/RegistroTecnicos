@@ -8,8 +8,8 @@ public class Trabajos
     [Key]
     public int TrabajoId { get; set; }
 
-    [Required(ErrorMessage ="Campo obligatorio")]
-    public DateTime Fecha {  get; set; }
+    [Required(ErrorMessage = "Campo obligatorio")]
+    public DateTime Fecha { get; set; } = DateTime.Now;
 
     [Required(ErrorMessage = "Campo obligatorio")]
     [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Solo se permiten letras")]
