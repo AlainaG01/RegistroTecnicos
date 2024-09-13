@@ -63,6 +63,6 @@ public class TrabajosService
     public async Task<bool> ExisteTrabajo(int trabajoId)
     {
         return await _contexto.Trabajos
-            .AnyAsync(e => e.TrabajoId !=  trabajoId);
+            .AnyAsync(e => e.TrabajoId ==  trabajoId);
     }
 }
