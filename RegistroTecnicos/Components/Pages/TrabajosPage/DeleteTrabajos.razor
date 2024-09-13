@@ -1,0 +1,71 @@
+﻿@page "/Tecnico/Trabajos/Delete/{TrabajoId:int}"
+
+@inject TrabajosService trabajosService
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+
+@*HTML*@
+<PageTitle>Delete</PageTitle>
+<div class="container">
+    <div class="shadow-lg">
+        @*header*@
+        <div class="card-header text-center">
+            <h3><strong>Eliminar Trabajo</strong></h3>
+        </div>
+
+        @*body*@
+        <div class="card-body">
+            <div class="text-center">
+                <h4><strong>¿Desea eliminar este trabajo?</strong></h4>
+            </div>
+            <ul>
+                <li><strong>TrabajoId: </strong>@Trabajo.TrabajoId</li>
+                <li><strong>Fecha: </strong>@Trabajo.Fecha</li>
+                <li><strong>Cliente: </strong>@Trabajo.Cliente.Nombres</li>
+                <li><strong>Tecnico: </strong>@Trabajo.Tecnico.Nombres</li>
+                <li><strong>Descripci&oacute;n: </strong>@Trabajo.Descripcion</li>
+                <li><strong>Monto: </strong>@Trabajo.Monto</li>
+            </ul>
+        </div>
+    </div>
+    @*Footer*@
+    <div class="card-footer text-center">
+        <button type="button" class="btn btn-primary bi bi-arrow-90deg-left" @onclick="Volver"></button>
+        <button type="submit" class="btn btn-danger bi bi-trash" @onclick="Eliminar"></button>
+    </div>
+</div>
+
+@Mensaje
+
+@code {
+    [Parameter]
+    public int TrabajoId { get; set; }
+
+    public Trabajos Trabajo { get; set; } = new Trabajos();
+
+    public string Mensaje { get; set; } = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Trabajo = await trabajosService.Buscar(TrabajoId);
+    }
+
+    public void Volver()
+    {
+        navigationManager.NavigateTo("/Tecnicos/Index");
+    }
+
+    public async Task Eliminar()
+    {
+        var eliminado = await trabajosService.Eliminar(Trabajo.TrabajoId);
+
+        if (eliminado)
+        {
+            Mensaje = "El trabajo a sido eliminado correctamente";
+        }
+        else
+        {
+            Mensaje = "El trabajo no a sido eliminado correctamente";
+        }
+    }
+}
