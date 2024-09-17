@@ -4,7 +4,6 @@
 @inject TecnicosService tecnicoService
 @inject ClientesService clienteService
 @inject NavigationManager navigationManager
-@inject IJSRuntime js
 @rendermode InteractiveServer
 
 @*HTML*@
@@ -83,8 +82,7 @@
             <div class="card-footer text-center">
                 <button type="button" class="btn btn-primary bi bi-arrow-90deg-left" @onclick="Volver"></button>
                 <button type="submit" class="btn btn-success bi bi-floppy-fill"></button>
-                <button type="button" class="btn btn-outline-success bi bi-whatsapp" @onclick="EnviarMensaje">Mensaje</button>
-
+              
             </div>
         </div>
     </div>
@@ -98,7 +96,6 @@
     public Trabajos Trabajo { get; set; } = new Trabajos();
 
     public string Mensaje { get; set; } = string.Empty;
-    public string MensajeCliente { get; set; } = string.Empty;
 
     public List<Clientes> ListaClientes { get; set; } = new List<Clientes>();
     public List<Tecnicos> ListaTecnicos { get; set; } = new List<Tecnicos>();
@@ -127,16 +124,5 @@
         {
             Mensaje = "No se ha modificado correctamente";
         }
-    }
-
-    public async Task EnviarMensaje()
-    {
-        MensajeCliente = $"¡Buenas noticias! La solicitud {Trabajo.Descripcion} está completo y a tu disposición.";
-
-        string mensajeCodificado = Uri.EscapeDataString(MensajeCliente);
-
-        string urlWhatsApp = $"https://wa.me/+1{Trabajo.Cliente.WhatsApp}?text={mensajeCodificado}";
-
-        await js.InvokeVoidAsync("open", urlWhatsApp, "_blank");
     }
 }
