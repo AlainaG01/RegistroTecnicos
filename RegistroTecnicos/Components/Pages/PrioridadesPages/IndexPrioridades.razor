@@ -1,0 +1,139 @@
+﻿@page "/Tecnicos/Prioridades/Index"
+
+@inject PrioridadesService prioridadesService
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+
+<PageTitle>Index</PageTitle>
+<div class="container">
+    <div class="shadow-lg">
+        @*header*@
+        <div class="card-header text-center">
+            <h3><strong>Listado de prioridades</strong></h3>
+        </div>
+        @*body*@
+        <div class="card-body">
+            <div class="row">
+                <div class="col-3">
+                    <label class="col-form-label"><strong>Filtrar por</strong></label>
+                </div>
+
+                <div class="col-4">
+                    <label class="col-form-label"><strong>B&uacute;squeda</strong></label>
+                </div>
+            </div>
+
+            <div class="row aling-items-center">
+                <div class="col-3">
+                    <InputSelect class="form-select" @bind-Value="Filtro">
+                        <option value="" selected disabled>Elija una opci&oacute;n</option>
+                        <option value="Descripcion">Descripcion</option>
+                        <option value="Tiempo">Tiempo</option>
+                    </InputSelect>
+                </div>
+
+                <div class="col-4">
+                    <div class="input-group">
+                        <input class="form-control" @bind="ValorFiltro" placeholder="Buscar" />
+                        <button type="button" class="btn btn-outline-primary bi bi-search" @onclick="Buscar"></button>
+                    </div>
+                </div>
+
+                <div class="col-auto">
+                    <button type="button" class="btn btn-outline-secondary bi bi-arrow-clockwise" @onclick="Restablecer"></button>
+                </div>
+            </div>
+
+            <table class="table table-bordered text-center mt-4">
+                <thead>
+                    <tr>
+                        <th>PrioridadId</th>
+                        <th>Descripcion</th>
+                        <th>Tiempo</th>
+                        <th>Observar</th>
+                        <th>Editar</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var prioridad in ListaPrioridades)
+                    {
+                        <tr>
+                            <td>@prioridad.PrioridadesId</td>
+                            <td>@prioridad.Descripcion</td>
+                            <td>@prioridad.Tiempo</td>
+
+                            <td>
+                                <button type="button" class="btn btn-outline-primary bi bi-eye-fill"
+                                        @onclick="() => PantallaDetalles(prioridad.PrioridadesId)"></button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-outline-warning bi bi-pencil-square"
+                                        @onclick="() => PantallaModificar(prioridad.PrioridadesId)"></button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-outline-danger bi bi-trash-fill"
+                                        @onclick="() => PantallaEliminar(prioridad.PrioridadesId)"></button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer">
+            <p><strong>Total de prioridades: </strong>@ListaPrioridades.Count</p>
+            <div class="col-3">
+                <button type="button" class="btn btn-primary" @onclick="PantallaCrear">Crear</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    public List<Prioridades> ListaPrioridades { get; set; } = new List<Prioridades>();
+
+    public string Filtro { get; set; } = string.Empty;
+    public string ValorFiltro { get; set; } = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        ListaPrioridades = await prioridadesService.Listar(e => e.PrioridadesId > 0);
+
+    }
+
+    public void PantallaCrear() => navigationManager.NavigateTo("/Tecnicos/Prioridades/Creater");
+
+    public void PantallaModificar(int id) => navigationManager.NavigateTo($"/Tecnicos/Prioridades/Edit/{id}");
+
+    public void PantallaDetalles(int id) => navigationManager.NavigateTo($"/Tecnicos/Prioridades/Details/{id}");
+
+    public void PantallaEliminar(int id) => navigationManager.NavigateTo($"/Tecnicos/Prioridades/Delete/{id}");
+
+    private async Task Buscar()
+    {
+        if(ValorFiltro.Trim() != "")
+        {
+            if(Filtro == "Descripcion")
+            {
+                ListaPrioridades = await prioridadesService.Listar(e => e.Descripcion.ToLower().Contains(ValorFiltro.ToLower()));
+            }
+            else if (Filtro == "Tiempo" && int.TryParse(ValorFiltro, out int tiempo))
+            {
+                ListaPrioridades = await prioridadesService.Listar(e => e.Tiempo == tiempo);
+
+            }
+
+        }
+        else
+        {
+            ListaPrioridades = await prioridadesService.Listar(e => e.PrioridadesId > 0);
+        }
+    }
+
+    private async Task Restablecer()
+    {
+        ListaPrioridades = await prioridadesService.Listar(e => e.PrioridadesId > 0);
+        Filtro = string.Empty;
+        ValorFiltro = string.Empty;
+    }
+}
