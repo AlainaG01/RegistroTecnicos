@@ -50,8 +50,7 @@ public class TecnicosService
     {
         return await _contexto.Tecnicos
             .Include(t => t.TipoTecnico)
-            .AsNoTracking()
-            .FirstOrDefaultAsync(e => e.TecnicoId == id);
+            .AsNoTracking().FirstOrDefaultAsync(e => e.TecnicoId == id);
     }
 
     public async Task<List<Tecnicos>> Listar(Expression<Func<Tecnicos, bool>> criterio)
