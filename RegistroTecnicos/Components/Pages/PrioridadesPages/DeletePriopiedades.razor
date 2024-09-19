@@ -1,0 +1,66 @@
+﻿@page "/Tecnicos/Prioridades/Delete/{PrioridadId:int}"
+
+@inject PrioridadesService prioridadesService
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+
+@*HTML*@
+<PageTitle>Delete</PageTitle>
+<div class="container">
+    <div class="shadow-lg">
+        @*header*@
+        <div class="card-header text-center">
+            <h3><strong>Eliminar Prioridad</strong></h3>
+        </div>
+
+        @*body*@
+        <div class="card-body">
+            <div class="text-center">
+                <h4><strong>¿Desea eliminar esta prioridad?</strong></h4>
+            </div>
+            <ul>
+                <li><strong>PrioridadId: </strong>@Prioridad.PrioridadesId</li>
+                <li><strong>Descripcion: </strong>@Prioridad.Descripcion</li>
+                <li><strong>Tiempo (Minutos): </strong>@Prioridad.Tiempo</li>
+            </ul>
+        </div>
+    </div>
+    @*Footer*@
+    <div class="card-footer text-center">
+        <button type="button" class="btn btn-primary bi bi-arrow-90deg-left" @onclick="Volver"></button>
+        <button type="submit" class="btn btn-danger bi bi-trash" @onclick="Eliminar"></button>
+    </div>
+</div>
+@Mensaje
+
+@code {
+    [Parameter]
+    public int PrioridadId { get; set; }
+
+    public Prioridades Prioridad { get; set; } = new Prioridades();
+
+    public string Mensaje { get; set; } = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Prioridad = await prioridadesService.Buscar(PrioridadId);
+    }
+
+    private async Task Eliminar()
+    {
+        var eliminado = await prioridadesService.Eliminar(Prioridad.PrioridadesId);
+        if (eliminado)
+        {
+            Mensaje = $"La prioridad {Prioridad.Descripcion} ha sido eliminada";
+        }
+        else
+        {
+            Mensaje = "No se ha eliminado correctamente";
+        }
+    }
+
+    public void Volver()
+    {
+        navigationManager.NavigateTo("/Tecnicos/Prioridades/Index");
+    }
+}
