@@ -1,0 +1,46 @@
+﻿@page "/Tecnicos/Prioridades/Details/{PrioridadId:int}"
+
+@inject PrioridadesService prioridadesService
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+
+@*HTML*@
+<PageTitle>Details</PageTitle>
+<div class="container">
+    <div class="shadow-lg">
+        @*header*@
+        <div class="card-header text-center">
+            <h3><strong>Datos Prioridad</strong></h3>
+        </div>
+
+        @*body*@
+        <div class="card-body">
+            <ul>
+                <li><strong>PrioridadId: </strong>@Prioridad.PrioridadesId</li>
+                <li><strong>Descripcion: </strong>@Prioridad.Descripcion</li>
+                <li><strong>Tiempo (Minutos): </strong>@Prioridad.Tiempo</li>
+            </ul>
+        </div>
+    </div>
+    @*Footer*@
+    <div class="card-footer text-center">
+        <button type="button" class="btn btn-primary bi bi-arrow-90deg-left" @onclick="Volver"></button>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int PrioridadId { get; set; }
+
+    public Prioridades Prioridad { get; set; } = new Prioridades();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Prioridad = await prioridadesService.Buscar(PrioridadId);
+    }
+
+    public void Volver()
+    {
+        navigationManager.NavigateTo("/Tecnicos/Prioridades/Index");
+    }
+}
