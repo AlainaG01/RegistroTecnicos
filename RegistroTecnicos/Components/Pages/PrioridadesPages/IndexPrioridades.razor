@@ -64,16 +64,13 @@
                             <td>@prioridad.Tiempo</td>
 
                             <td>
-                                <button type="button" class="btn btn-outline-primary bi bi-eye-fill"
-                                        @onclick="() => PantallaDetalles(prioridad.PrioridadesId)"></button>
+                                <a href="/Tecnicos/Prioridades/Details/@prioridad.PrioridadesId" class="btn btn-outline-primary bi bi-eye-fill"></a>
                             </td>
                             <td>
-                                <button type="button" class="btn btn-outline-warning bi bi-pencil-square"
-                                        @onclick="() => PantallaModificar(prioridad.PrioridadesId)"></button>
+                                <a href="/Tecnicos/Prioridades/Edit/@prioridad.PrioridadesId" class="btn btn-outline-warning bi bi-pencil-square"></a>
                             </td>
                             <td>
-                                <button type="button" class="btn btn-outline-danger bi bi-trash-fill"
-                                        @onclick="() => PantallaEliminar(prioridad.PrioridadesId)"></button>
+                                <a href="/Tecnicos/Prioridades/Delete/@prioridad.PrioridadesId" class="btn btn-outline-danger bi bi-trash-fill"></a>
                             </td>
                         </tr>
                     }
@@ -83,13 +80,14 @@
         <div class="card-footer">
             <p><strong>Total de prioridades: </strong>@ListaPrioridades.Count</p>
             <div class="col-3">
-                <button type="button" class="btn btn-primary" @onclick="PantallaCrear">Crear</button>
+                <a href="/Tecnicos/Prioridades/Creater" class="btn btn-primary">Crear</a>
             </div>
         </div>
     </div>
 </div>
 
 @code {
+    
     public List<Prioridades> ListaPrioridades { get; set; } = new List<Prioridades>();
 
     public string Filtro { get; set; } = string.Empty;
@@ -100,14 +98,6 @@
         ListaPrioridades = await prioridadesService.Listar(e => e.PrioridadesId > 0);
 
     }
-
-    public void PantallaCrear() => navigationManager.NavigateTo("/Tecnicos/Prioridades/Creater");
-
-    public void PantallaModificar(int id) => navigationManager.NavigateTo($"/Tecnicos/Prioridades/Edit/{id}");
-
-    public void PantallaDetalles(int id) => navigationManager.NavigateTo($"/Tecnicos/Prioridades/Details/{id}");
-
-    public void PantallaEliminar(int id) => navigationManager.NavigateTo($"/Tecnicos/Prioridades/Delete/{id}");
 
     private async Task Buscar()
     {
