@@ -59,8 +59,20 @@
         Prioridad = await prioridadesService.Buscar(PrioridadId);
     }
 
+    private async Task<bool> Validar()
+    {
+        var valido = await prioridadesService.ExistePrioridad(Prioridad.PrioridadesId, Prioridad.Tiempo, Prioridad.Descripcion);
+        return valido;
+    }
+
     public async Task Modificar()
     {
+        if (await Validar())
+        {
+            Mensaje = "Ya existe una prioridad con estos datos";
+            return;
+        }
+
         var modificado = await prioridadesService.Guardar(Prioridad);
         if (modificado)
         {

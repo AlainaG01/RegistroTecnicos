@@ -64,6 +64,6 @@ public class PrioridadesService
     public async Task<bool> ExistePrioridad(int id, int tiempo, string descripcion)
     {
         return await _contexto.Prioridades
-            .AnyAsync(e => e.PrioridadesId != id && e.Tiempo == tiempo && e.Descripcion.ToLower().Equals(descripcion.ToLower()));
+            .AnyAsync(e => e.PrioridadesId != id && e.Tiempo == tiempo || e.Descripcion.ToLower().Equals(descripcion.ToLower()));
     }
 }
