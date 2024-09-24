@@ -87,18 +87,15 @@
                             <td>@trabajo.Monto</td>
 
                             <td>
-                                <button type="button" class="btn btn-outline-primary bi bi-eye-fill"
-                                        @onclick="()=> PantallaObservar(trabajo.TrabajoId)"></button>
+                                <a href="/Tecnicos/Trabajos/Details/@trabajo.TrabajoId" class="btn btn-outline-primary bi bi-eye-fill"></a>
                             </td>
 
                             <td>
-                                <button type="button" class="btn btn-outline-warning bi bi-pencil-square"
-                                        @onclick="()=> PantallaModificar(trabajo.TrabajoId)"></button>
+                                <a href="/Tecnicos/Trabajos/Edit/@trabajo.TrabajoId" class="btn btn-outline-warning bi bi-pencil-square"></a>
                             </td>
 
                             <td>
-                                <button type="button" class="btn btn-outline-danger bi bi-trash-fill"
-                                        @onclick="()=> PantallaEliminar(trabajo.TrabajoId)"></button>
+                                <a href="/Tecnico/Trabajos/Delete/@trabajo.TrabajoId" class="btn btn-outline-danger bi bi-trash-fill"></a>
                             </td>
                         </tr>
                     }
@@ -110,7 +107,7 @@
             <p><strong>Total de Trabajos: </strong>@ListaTrabajos.Count</p>
             @*Crear*@
             <div class="col-3">
-                <button type="button" class="btn btn-primary" @onclick="PantallaCrear"> Crear</button>
+                <a href="/Tecnicos/Trabajos/Create" class="btn btn-outline-primary">Crear</a>
             </div>
         </div>
     </div>
@@ -124,23 +121,6 @@
     protected override async Task OnInitializedAsync()
     {
         ListaTrabajos = await trabajosService.Listar(e => e.TrabajoId > 0);
-    }
-
-    public void PantallaCrear() => navigationManager.NavigateTo("/Tecnicos/Trabajos/Create");
-
-    public void PantallaObservar(int id)
-    {
-        navigationManager.NavigateTo($"/Tecnicos/Trabajos/Details/{id}");
-    }
-
-    public void PantallaModificar(int id)
-    {
-        navigationManager.NavigateTo($"/Tecnicos/Trabajos/Edit/{id}");
-    }
-
-    public void PantallaEliminar(int id)
-    {
-        navigationManager.NavigateTo($"/Tecnico/Trabajos/Delete/{id}");
     }
 
     private async Task Buscar()
