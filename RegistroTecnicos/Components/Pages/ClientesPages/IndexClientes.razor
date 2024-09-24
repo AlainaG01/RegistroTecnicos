@@ -76,18 +76,15 @@
                             <td>@cliente.WhatsApp</td>
 
                             <td>
-                                <button type="button" class="btn btn-outline-primary bi bi-eye-fill"
-                                        @onclick="()=> PantallaObservar(cliente.ClienteId)"></button>
+                                <a href="/Tecnicos/Clientes/Details/@cliente.ClienteId" class="btn btn-outline-primary bi bi-eye-fill"></a>
                             </td>
 
                             <td>
-                                <button type="button" class="btn btn-outline-warning bi bi-pencil-square"
-                                        @onclick="()=> PantallaModificar(cliente.ClienteId)"></button>
+                                <a href="/Tecnicos/Clientes/Edit/@cliente.ClienteId" class="btn btn-outline-warning bi bi-pencil-square"></a>
                             </td>
 
                             <td>
-                                <button type="button" class="btn btn-outline-danger bi bi-trash-fill"
-                                        @onclick="()=> PantallaEliminar(cliente.ClienteId)"></button>
+                                <a href="/Tecnicos/Clientes/Delete/@cliente.ClienteId" class="btn btn-outline-danger bi bi-trash-fill"></a>
                             </td>
                         </tr>
                     }
@@ -99,7 +96,7 @@
             <p><strong>Total de Clientes: </strong>@ListaClientes.Count</p>
             @*Crear*@
             <div class="col-3">
-                <button type="button" class="btn btn-primary" @onclick="PantallaCrear"> Crear</button>
+                <a href="/Tecnicos/Clientes/Create" class="btn btn-outline-primary">Crear</a>
             </div>
         </div>
     </div>
@@ -114,23 +111,6 @@
     protected override async Task OnInitializedAsync()
     {
         ListaClientes = await clientesService.Listar(e => e.ClienteId > 0);
-    }
-
-    public void PantallaCrear() => navigationManager.NavigateTo("/Tecnicos/Clientes/Create");
-
-    public void PantallaObservar(int id)
-    {
-        navigationManager.NavigateTo($"/Tecnicos/Clientes/Details/{id}");
-    }
-
-    public void PantallaModificar(int id)
-    {
-        navigationManager.NavigateTo($"/Tecnicos/Clientes/Edit/{id}");
-    }
-
-    public void PantallaEliminar(int id)
-    {
-        navigationManager.NavigateTo($"/Tecnicos/Clientes/Delete/{id}");
     }
 
     private async Task Buscar()

@@ -74,18 +74,15 @@
                             <td>@tipo.Descripcion</td>
 
                             <td>
-                                <button type="button" class="btn btn-outline-primary bi bi-eye-fill"
-                                        @onclick="()=> PantallaObservar(tipo.TiposTecnicosId)"></button>
+                                <a href="/Tecnicos/TiposTecnicos/Details/@tipo.TiposTecnicosId" class="btn btn-outline-primary bi bi-eye-fill"></a>
                             </td>
 
                             <td>
-                                <button type="button" class="btn btn-outline-warning bi bi-pencil-square"
-                                        @onclick="()=> PantallaEditar(tipo.TiposTecnicosId)"></button>
+                                <a href="/Tecnicos/TiposTecnicos/Edit/@tipo.TiposTecnicosId" class="btn btn-outline-warning bi bi-pencil-square"></a>
                             </td>
 
                             <td>
-                                <button type="button" class="btn btn-outline-danger bi bi-trash-fill"
-                                        @onclick="()=> PantallaEliminar(tipo.TiposTecnicosId)"></button>
+                                <a href="/Tecnicos/TiposTecnicos/Delete/@tipo.TiposTecnicosId" class="btn btn-outline-danger bi bi-trash-fill"></a>
                             </td>
                         </tr>
                     }
@@ -97,7 +94,7 @@
             <p><strong>Total de Tipos T&eacute;cnicos: </strong>@ListaTipoTecnicos.Count</p>
             @*Crear*@
             <div class="col-3">
-                <button type="button" class="btn btn-primary" @onclick="PantallaCrear"> Crear</button>
+                <a href="/Tecnicos/TiposTecnicos/Create" class="btn btn-outline-primary">Crear</a>
             </div>
         </div>
     </div>
@@ -112,23 +109,6 @@
     protected override async Task OnInitializedAsync()
     {
         ListaTipoTecnicos = await tiposTecnicosService.Listar(e => e.TiposTecnicosId > 0);
-    }
-
-    public void PantallaCrear() => navigationManager.NavigateTo("/Tecnicos/TiposTecnicos/Create");
-
-    public void PantallaObservar(int id)
-    {
-        navigationManager.NavigateTo($"/Tecnicos/TiposTecnicos/Details/{id}");
-    }
-
-    public void PantallaEditar(int id)
-    {
-        navigationManager.NavigateTo($"/Tecnicos/TiposTecnicos/Edit/{id}");
-    }
-
-    public void PantallaEliminar(int id)
-    {
-        navigationManager.NavigateTo($"/Tecnicos/TiposTecnicos/Delete/{id}");
     }
 
     private async Task Buscar()
