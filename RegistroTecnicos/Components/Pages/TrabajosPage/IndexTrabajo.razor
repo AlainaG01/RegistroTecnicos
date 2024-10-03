@@ -39,6 +39,7 @@
                         <option value="" selected disabled>Elija una opci&oacute;n</option>
                         <option value="Descripcion">Descripcion</option>
                         <option value="Fecha">Fecha</option>
+                        <opcion value="Prioridad">Prioridad</opcion>
                     </InputSelect>
                 </div>
 
@@ -62,11 +63,13 @@
                     <tr>
                         <th>TrabajoId</th>
                         <th>Fecha</th>
+                        
                         <th>ClienteId</th>
                         <th>Cliente</th>
                         <th>TecnicoId</th>
                         <th>Tecnico</th>
                         <th>Descripci&oacute;n</th>
+                        <th>Prioridad</th>
                         <th>Monto</th>
                         <th>Observar</th>
                         <th>Editar</th>
@@ -84,6 +87,7 @@
                             <td>@trabajo.Tecnico.TecnicoId</td>
                             <td>@trabajo.Tecnico.Nombres</td>
                             <td>@trabajo.Descripcion</td>
+                            <td>@trabajo.Prioridad.Descripcion</td>
                             <td>@trabajo.Monto</td>
 
                             <td>
@@ -136,6 +140,9 @@
                 {
                     ListaTrabajos = await trabajosService.Listar(e => e.Fecha.Date == fechaFiltro.Date);
                 }
+            }else if(Filtro == "Prioridad")
+            {
+                ListaTrabajos = await trabajosService.Listar(e => e.Prioridad.Descripcion.ToLower().Contains(ValorFiltro.ToLower()));
             }
         }
         else
