@@ -3,6 +3,7 @@
 @inject TrabajosService trabajosService
 @inject TecnicosService tecnicoService
 @inject ClientesService clienteService
+@inject PrioridadesService prioridadesService
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer
 
@@ -69,6 +70,18 @@
                     <ValidationMessage For="(()=> Trabajo.Descripcion)" />
                 </div>
 
+                @*Prioridad*@
+                <div class="col-4 ms-3">
+                    <label class="form-label"><strong>Prioridad</strong></label>
+                    <InputSelect class="form-select" @bind-Value="Trabajo.PrioridadId">
+                        <option ="" selected disabled>Elija una opci&oacute;n</option>
+                        @foreach(var prioridad in ListaPrioridades)
+                        {
+                            <option value="@prioridad.PrioridadesId">@prioridad.Descripcion</option>
+                        }
+                    </InputSelect>
+                </div>
+
                 @*SueldoHora*@
                 <div class="col-4 ms-3">
                     <label class="form-label"><strong>Monto</strong></label>
@@ -96,11 +109,13 @@
 
     public List<Clientes> ListaClientes { get; set; } = new List<Clientes>();
     public List<Tecnicos> ListaTecnicos { get; set; } = new List<Tecnicos>();
+    public List<Prioridades> ListaPrioridades { get; set; } = new List<Prioridades>();
 
     protected override async Task OnInitializedAsync()
     {
         ListaClientes = await clienteService.Listar(e => e.ClienteId > 0);
         ListaTecnicos = await tecnicoService.Listar(t => t.TecnicoId > 0);
+        ListaPrioridades = await prioridadesService.Listar(p => p.PrioridadesId > 0);
     }
 
     public void Volver()
