@@ -37,9 +37,10 @@
                 <div class="col-3">
                     <InputSelect class="form-select" @bind-Value="Filtro">
                         <option value="" selected disabled>Elija una opci&oacute;n</option>
+                        <option value="Prioridad">Prioridad</option>
                         <option value="Descripcion">Descripcion</option>
                         <option value="Fecha">Fecha</option>
-                        <opcion value="Prioridad">Prioridad</opcion>
+                        
                     </InputSelect>
                 </div>
 
@@ -140,7 +141,8 @@
                 {
                     ListaTrabajos = await trabajosService.Listar(e => e.Fecha.Date == fechaFiltro.Date);
                 }
-            }else if(Filtro == "Prioridad")
+            }
+            else if (Filtro == "Prioridad")
             {
                 ListaTrabajos = await trabajosService.Listar(e => e.Prioridad.Descripcion.ToLower().Contains(ValorFiltro.ToLower()));
             }
