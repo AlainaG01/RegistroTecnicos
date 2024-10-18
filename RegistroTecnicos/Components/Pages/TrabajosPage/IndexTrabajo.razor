@@ -72,6 +72,7 @@
                         <th>Descripci&oacute;n</th>
                         <th>Prioridad</th>
                         <th>Monto</th>
+                        <th>Articulos</th>
                         <th>Observar</th>
                         <th>Editar</th>
                         <th>Eliminar</th>
@@ -92,6 +93,9 @@
                             <td>@trabajo.Monto</td>
 
                             <td>
+                                <a href="/Tecnicos/Trabajos/Detalle/@trabajo.TrabajoId" class="btn btn-outline-info bi bi-bag-plus-fill"></a>
+                            </td>
+                            <td>
                                 <a href="/Tecnicos/Trabajos/Details/@trabajo.TrabajoId" class="btn btn-outline-primary bi bi-eye-fill"></a>
                             </td>
 
@@ -102,6 +106,7 @@
                             <td>
                                 <a href="/Tecnico/Trabajos/Delete/@trabajo.TrabajoId" class="btn btn-outline-danger bi bi-trash-fill"></a>
                             </td>
+                           
                         </tr>
                     }
                 </tbody>
