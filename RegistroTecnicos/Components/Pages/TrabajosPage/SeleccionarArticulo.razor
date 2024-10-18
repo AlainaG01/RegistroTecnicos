@@ -1,0 +1,53 @@
+﻿<div class="col-auto input-group align-items-center">
+    <InputSelect class="form-select" @bind-Value="ArticuloId">
+
+        <option disabled value="0">Seleccione un articulo</option>
+        @foreach (var articulo in ListaArticulo)
+        {
+            <option value="@articulo.ArticuloId">@articulo.Descripcion -- $ @articulo.Precio</option>
+        }
+
+    </InputSelect>
+
+    <label class="col-form-label input-group-text">Cantidad</label>
+    <InputNumber class="form-control" @bind-Value="Cantidad"></InputNumber>
+    <button type="button" class="btn btn-success bi bi-plus-square" @onclick="ElegirArticulo"></button>
+</div>
+@if (!string.IsNullOrEmpty(Mensaje))
+{
+    <div class="alert alert-danger">@Mensaje</div>
+}
+
+@code {
+    [Parameter]
+    public List<Articulos> ListaArticulo { get; set; } = [];
+
+    [Parameter]
+    public int ArticuloId { get; set; }
+
+    [Parameter]
+    public int Cantidad { get; set; }
+
+    [Parameter]
+    public EventCallback<(Articulos articulo, int Cantidad)> ArticuloSeleccionado { get; set; }
+
+    public string? Mensaje { get; set; } = string.Empty;
+
+    private async Task ElegirArticulo()
+    {
+        if (ArticuloId > 0)
+        {
+            var ArticuloElegido = ListaArticulo.Single(a => a.ArticuloId == ArticuloId);
+            if (ArticuloElegido.Existencia < Cantidad)
+            {
+                Mensaje = "La cantidad que solicita es mayor a la existente";
+                return;
+            }
+            await ArticuloSeleccionado.InvokeAsync((ArticuloElegido, Cantidad));
+        }
+        else
+        {
+            Mensaje = "Debe seleccionar un articulo y especificar su cantidad";
+        }
+    }
+}
