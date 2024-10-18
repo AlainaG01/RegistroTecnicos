@@ -27,6 +27,17 @@
                 <li><strong>Descripci&oacute;n: </strong>@Trabajo.Descripcion</li>
                 <li><strong>Monto: </strong>@Trabajo.Monto</li>
             </ul>
+            <div class="border border-success p-2 mt-2">
+                @foreach(var detalle in Trabajo.TrabajosDetalle)
+                {
+                    <ul>
+                        <li class="mt-2">
+                            Articulo ID: @detalle.ArticuloId -- @detalle.Articulo?.Descripcion, Cantidad: @detalle.Cantidad
+                            Precio:$ @detalle.Articulo.Precio
+                        </li>
+                    </ul>
+                }
+            </div>
         </div>
     </div>
     @*Footer*@
@@ -48,7 +59,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Trabajo = await trabajosService.Buscar(TrabajoId);
+        Trabajo = await trabajosService.BuscarConDetalles(TrabajoId);
     }
 
     public void Volver()
