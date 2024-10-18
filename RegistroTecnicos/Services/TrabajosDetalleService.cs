@@ -1,4 +1,5 @@
-﻿using RegistroTecnicos.DAL;
+﻿using Microsoft.EntityFrameworkCore;
+using RegistroTecnicos.DAL;
 using RegistroTecnicos.Models;
 using System.Linq.Expressions;
 
@@ -13,5 +14,11 @@ public class TrabajosDetalleService
         _contexto = contexto;
     }
 
+
+    public async Task<List<Articulos>> Listar(Expression<Func<Articulos, bool>> criterio)
+    {
+        return await _contexto.Articulos.AsNoTracking().Where(criterio).ToListAsync();
+    }
+    
     
 }
