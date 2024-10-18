@@ -28,15 +28,16 @@
                 <li><strong>Monto: </strong>@Trabajo.Monto</li>
             </ul>
             <div class="border border-success p-2 mt-2">
-                @foreach(var detalle in Trabajo.TrabajosDetalle)
-                {
-                    <ul>
+                <h5>Trabajo Detalle</h5>
+                <ul class="mt-3">
+                    @foreach(var detalle in Trabajo.TrabajosDetalle)
+                    {
                         <li class="mt-2">
                             Articulo ID: @detalle.ArticuloId -- @detalle.Articulo?.Descripcion -- Cantidad: @detalle.Cantidad
                             -- Precio:$ @detalle.Articulo.Precio
                         </li>
-                    </ul>
-                }
+                    }
+                </ul>
             </div>
         </div>
     </div>

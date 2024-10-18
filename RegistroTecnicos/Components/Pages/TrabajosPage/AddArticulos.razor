@@ -50,8 +50,8 @@
                             @foreach (var detalle in Trabajo.TrabajosDetalle)
                             {
                                 <li class="mt-2">
-                                    Articulo ID: @detalle.ArticuloId -- @detalle.Articulo?.Descripcion,
-                                    Precio:$ @detalle.Articulo.Precio
+                                    Articulo ID: @detalle.ArticuloId -- @detalle.Articulo?.Descripcion -- Cantidad: @detalle.Cantidad
+                                    -- Precio:$ @detalle.Articulo.Precio -- PrecioTotal: $ @detalle.Precio
                                     <button type="button" @onclick="() => Eliminar(detalle)" class="btn btn-outline-danger btn-sm ms-2 bi bi-trash"></button>
                                 </li>
                             }
@@ -67,11 +67,10 @@
             </div>
         </div>
     </EditForm>
+    @Mensaje
 }
 else
 {
-   
-
     <div class="container text-center mt-4">
         <h4>Ya este trabajo se le han asignado los artículos</h4>
         <h5>Si desea hacer alguna modificacion lo puede hacer en Edit</h5>
