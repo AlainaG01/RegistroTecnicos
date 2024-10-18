@@ -2,6 +2,8 @@
 using RegistroTecnicos.DAL;
 using RegistroTecnicos.Models;
 using System.Linq.Expressions;
+using System.Net.WebSockets;
+using System.Runtime.InteropServices;
 
 namespace RegistroTecnicos.Services;
 
@@ -34,7 +36,7 @@ public class TrabajosService
 
     public async Task<bool> Guardar(Trabajos trabajo)
     {
-        if(! await Existe(trabajo.TrabajoId))
+        if (!await Existe(trabajo.TrabajoId))
             return await Insertar(trabajo);
         else
             return await Modificar(trabajo);
@@ -47,7 +49,6 @@ public class TrabajosService
             .Where(e => e.TrabajoId == trabajoId)
             .ExecuteDeleteAsync() > 0;
     }
-
     public async Task<Trabajos> Buscar(int id)
     {
         return await _contexto.Trabajos
@@ -70,6 +71,8 @@ public class TrabajosService
     public async Task<bool> ExisteTrabajo(int trabajoId)
     {
         return await _contexto.Trabajos
-            .AnyAsync(e => e.TrabajoId ==  trabajoId);
+            .AnyAsync(e => e.TrabajoId == trabajoId);
     }
+    
+
 }
