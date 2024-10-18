@@ -59,6 +59,17 @@ public class TrabajosService
            .FirstOrDefaultAsync(e => e.TrabajoId == id);
     }
 
+    public async Task<Trabajos> BuscarConDetalles(int trabajoId)
+    {
+        return await _contexto.Trabajos
+            .Include(t => t.Prioridad)
+            .Include(t => t.Cliente)
+            .Include(t => t.Tecnico)
+            .Include(t => t.TrabajosDetalle)
+            .ThenInclude(td => td.Articulo)
+            .FirstOrDefaultAsync(t => t.TrabajoId == trabajoId);
+    }
+
     public async Task<List<Trabajos>> Listar(Expression<Func<Trabajos, bool>> criterio)
     {
         return await _contexto.Trabajos.Include(e => e.Tecnico)
