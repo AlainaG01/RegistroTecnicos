@@ -60,6 +60,7 @@
     {
         if (ArticuloId > 0)
         {
+            Mensaje = string.Empty;
             var ArticuloElegido = ListaArticulo.Single(a => a.ArticuloId == ArticuloId);
             if (ArticuloElegido.Existencia < Cantidad)
             {

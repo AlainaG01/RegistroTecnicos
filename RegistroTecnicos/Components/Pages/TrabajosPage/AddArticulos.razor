@@ -107,7 +107,7 @@ else
 
         var articuloExistente = Trabajo.TrabajosDetalle
             .FirstOrDefault(d => d.ArticuloId == selection.articulos.ArticuloId);
-
+       
         if (articuloExistente != null)
         {
             articuloExistente.Cantidad += selection.cantidad;
@@ -128,7 +128,6 @@ else
 
             Trabajo.TrabajosDetalle.Add(Detalle);
         }
-
         TrabajoDetalle = new TrabajosDetalle();
         await Task.CompletedTask;
     }
