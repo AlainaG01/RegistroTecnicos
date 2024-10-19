@@ -17,7 +17,7 @@ public class TrabajosDetalleService
 
     public async Task<List<Articulos>> Listar(Expression<Func<Articulos, bool>> criterio)
     {
-        return await _contexto.Articulos.AsNoTracking().Where(criterio).ToListAsync();
+        return await _contexto.Articulos.Where(criterio).ToListAsync();
     }
     
     
