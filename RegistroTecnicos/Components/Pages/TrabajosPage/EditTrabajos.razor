@@ -204,7 +204,6 @@
 
     public async Task Eliminar(TrabajosDetalle detalle)
     {
-         await trabajosService.AfectarCantidad(Trabajo.TrabajosDetalle.ToArray(), false);
         Trabajo.TrabajosDetalle.Remove(detalle);
        
         TrabajoDetalle.Cantidad = detalle.Cantidad;
