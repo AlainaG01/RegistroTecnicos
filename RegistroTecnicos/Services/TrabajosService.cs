@@ -28,13 +28,19 @@ public class TrabajosService
         return await _contexto.SaveChangesAsync() > 0;
     }
 
-
-    private async Task<bool> Modificar(Trabajos trabajo)
+    private async Task<bool> Modificar(Trabajos trabajos)
     {
-        await AfectarCantidad(trabajo.TrabajosDetalle.ToArray(), true);
-        _contexto.Update(trabajo);
-        var modificado = await _contexto.SaveChangesAsync() > 0;
-        return modificado;
+        var trabajoOriginal = await _contexto.Trabajos
+        .Include(t => t.TrabajosDetalle)
+        .AsNoTracking() 
+        .FirstOrDefaultAsync(t => t.TrabajoId == trabajos.TrabajoId);
+
+        await AfectarCantidad(trabajoOriginal.TrabajosDetalle.ToArray(), false);
+
+        await AfectarCantidad(trabajos.TrabajosDetalle.ToArray(), true);
+
+        _contexto.Update(trabajos);
+        return await _contexto.SaveChangesAsync() > 0;
     }
 
     public async Task<bool> Guardar(Trabajos trabajo)
