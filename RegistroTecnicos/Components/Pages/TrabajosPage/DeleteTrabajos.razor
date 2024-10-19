@@ -27,6 +27,18 @@
                 <li><strong>Descripci&oacute;n: </strong>@Trabajo.Descripcion</li>
                 <li><strong>Monto: </strong>@Trabajo.Monto</li>
             </ul>
+            <div class="border border-success p-2 mt-2">
+                <h5>Trabajo Detalle</h5>
+                <ul class="mt-3">
+                    @foreach(var detalle in Trabajo.TrabajosDetalle)
+                    {
+                        <li class="mt-2">
+                            Articulo ID: @detalle.ArticuloId -- @detalle.Articulo?.Descripcion -- Cantidad: @detalle.Cantidad
+                            -- Precio:$ @detalle.Articulo.Precio -- PrecioTotal: $ @detalle.Precio
+                        </li>
+                    }
+                </ul>
+            </div>
         </div>
     </div>
     @*Footer*@
@@ -48,7 +60,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Trabajo = await trabajosService.Buscar(TrabajoId);
+        Trabajo = await trabajosService.BuscarConDetalles(TrabajoId);
     }
 
     public void Volver()
@@ -63,6 +75,7 @@
         if (eliminado)
         {
             Mensaje = "El trabajo a sido eliminado correctamente";
+            navigationManager.NavigateTo("/Tecnicos/Trabajos/Index");
         }
         else
         {

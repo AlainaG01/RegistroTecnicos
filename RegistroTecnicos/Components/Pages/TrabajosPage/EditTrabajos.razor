@@ -3,6 +3,7 @@
 @inject TrabajosService trabajosService
 @inject TecnicosService tecnicoService
 @inject ClientesService clienteService
+@inject TrabajosDetalleService trabajoDetalleService
 @inject PrioridadesService prioridadesService
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer
@@ -21,26 +22,26 @@
             <div class="card-header">
                 <h3>Modifiar Trabajo</h3>
             </div>
-
+           
             @*Body*@
-            <div class="card-body d-flex flex-column align-items-center justify-content-center text-lg-center">
+            <div class="card-body">
 
                 @*Id*@
                 <div class="col-4 ms-3">
-                    <label class="form-label"><strong>TrabajoId</strong></label>
+                    <label class="form-label ms-4"><strong>TrabajoId</strong></label>
                     <InputNumber class="form-control"
                                  @bind-Value="Trabajo.TrabajoId" readonly></InputNumber>
                 </div>
 
                 @*Fecha*@
                 <div class="col-4 ms-3">
-                    <label class="form-label"><strong>Fecha</strong></label>
+                    <label class="form-label ms-4"><strong>Fecha</strong></label>
                     <InputDate class="form-control" @bind-Value="Trabajo.Fecha"></InputDate>
                 </div>
 
                 @*Cliente*@
                 <div class="col-4 ms-3">
-                    <label class="form-label"><strong>Cliente</strong></label>
+                    <label class="form-label ms-4"><strong>Cliente</strong></label>
                     <InputSelect class="form-select" @bind-Value="Trabajo.ClienteId">
                         <option ="" selected disabled>Elija una opci&oacute;n</option>
                         @foreach (var cliente in ListaClientes)
@@ -52,7 +53,7 @@
 
                 @*Tecnico*@
                 <div class="col-4 ms-3">
-                    <label class="form-label"><strong>Tecnico</strong></label>
+                    <label class="form-label ms-4"><strong>Tecnico</strong></label>
                     <InputSelect class="form-select" @bind-Value="Trabajo.TecnicoId">
                         <option ="" selected disabled>Elija una opci&oacute;n</option>
                         @foreach (var tecnico in ListaTecnicos)
@@ -64,7 +65,7 @@
 
                 @*Descripcion*@
                 <div class="col-4 ms-3">
-                    <label class="form-label"><strong>Descripci&oacute;n</strong></label>
+                    <label class="form-label ms-4"><strong>Descripci&oacute;n</strong></label>
                     <InputText class="form-control"
                                @bind-Value="Trabajo.Descripcion"></InputText>
                     <ValidationMessage For="(()=> Trabajo.Descripcion)" />
@@ -72,7 +73,7 @@
 
                  @*Prioridad*@
                 <div class="col-4 ms-3">
-                    <label class="form-label"><strong>Prioridad</strong></label>
+                    <label class="form-label ms-4"><strong>Prioridad</strong></label>
                     <InputSelect class="form-select" @bind-Value="Trabajo.PrioridadId">
                         <option ="" selected disabled>Elija una opci&oacute;n</option>
                         @foreach(var prioridad in ListaPrioridades)
@@ -82,14 +83,39 @@
                     </InputSelect>
                 </div>
 
-                @*SueldoHora*@
+                @*Monto*@
                 <div class="col-4 ms-3">
-                    <label class="form-label"><strong>Monto</strong></label>
+                    <label class="form-label ms-4"><strong>Monto</strong></label>
                     <InputNumber class="form-control"
                                  @bind-Value="Trabajo.Monto"></InputNumber>
                     <ValidationMessage For="(()=> Trabajo.Monto)" />
                 </div>
 
+                @*Detalle*@
+                <div class="border border-success p-3 mt-3">
+                    <h5>Trabajo Detalle</h5>
+
+                    <div class="row">
+                        <div class="col-auto">
+                            <SeleccionarArticulo 
+                                ListaArticulo="ListaArticulos"
+                                ArticuloId="TrabajoDetalle.ArticuloId"
+                                Cantidad="TrabajoDetalle.Cantidad"
+                                Precio="TrabajoDetalle.Precio"
+                                ArticuloSeleccionado="AgregarArticulo" />
+                        </div>
+                    </div>
+                    <ul class="mt-3">
+                        @foreach (var detalle in Trabajo.TrabajosDetalle)
+                        {
+                            <li class="mt-2">
+                                Articulo ID: @detalle.ArticuloId -- @detalle.Articulo?.Descripcion -- Cantidad: @detalle.Cantidad
+                                -- Precio:$ @detalle.Articulo.Precio -- PrecioTotal: $ @detalle.Precio
+                                <button type="button" @onclick="() => Eliminar(detalle)" class="btn btn-outline-danger btn-sm ms-2 bi bi-trash"></button>
+                            </li>
+                        }
+                    </ul>
+                </div>
             </div>
             @*Footer*@
             <div class="card-footer text-center">
@@ -107,19 +133,20 @@
     public int TrabajoId { get; set; }
 
     public Trabajos Trabajo { get; set; } = new Trabajos();
-
+    public TrabajosDetalle TrabajoDetalle { get; set; } = new TrabajosDetalle();
     public string Mensaje { get; set; } = string.Empty;
-
+    public List<Articulos> ListaArticulos { get; set; } = new List<Articulos>();
     public List<Clientes> ListaClientes { get; set; } = new List<Clientes>();
     public List<Tecnicos> ListaTecnicos { get; set; } = new List<Tecnicos>();
     public List<Prioridades> ListaPrioridades { get; set; } = new List<Prioridades>();
 
     protected override async Task OnInitializedAsync()
     {
-        Trabajo = await trabajosService.Buscar(TrabajoId);
+        Trabajo = await trabajosService.BuscarConDetalles(TrabajoId);
         ListaClientes = await clienteService.Listar(e => e.ClienteId > 0);
         ListaTecnicos = await tecnicoService.Listar(t => t.TecnicoId > 0);
         ListaPrioridades = await prioridadesService.Listar(p => p.PrioridadesId > 0);
+        ListaArticulos = await trabajoDetalleService.Listar(a => a.ArticuloId > 0);
     }
 
     public void Volver()
@@ -134,10 +161,57 @@
         if (modificar)
         {
             Mensaje = "Se ha modificado correctamente";
+            navigationManager.NavigateTo("/Tecnicos/Trabajos/Index");
         }
         else
         {
             Mensaje = "No se ha modificado correctamente";
         }
+    }
+
+    private async Task AgregarArticulo((Articulos articulos, int cantidad) selection)
+    {
+
+        await LimpiarMensaje();
+
+        var articuloExistente = Trabajo.TrabajosDetalle
+            .FirstOrDefault(d => d.ArticuloId == selection.articulos.ArticuloId);
+
+        if (articuloExistente != null)
+        {
+            articuloExistente.Cantidad += selection.cantidad;
+            articuloExistente.Costo = articuloExistente.Articulo.Costo * articuloExistente.Cantidad;
+            articuloExistente.Precio = articuloExistente.Articulo.Precio * articuloExistente.Cantidad;
+        }
+        else
+        {
+            var Detalle = new TrabajosDetalle
+                {
+                    ArticuloId = selection.articulos.ArticuloId,
+                    Cantidad = selection.cantidad,
+                    Articulo = selection.articulos,
+                    Costo = selection.articulos.Costo * selection.cantidad,
+                    Precio = selection.articulos.Precio * selection.cantidad,
+                    TrabajoId = Trabajo.TrabajoId
+                };
+
+            Trabajo.TrabajosDetalle.Add(Detalle);
+        }
+
+        TrabajoDetalle = new TrabajosDetalle();
+        await Task.CompletedTask;
+    }
+
+    public async Task Eliminar(TrabajosDetalle detalle)
+    {
+        Trabajo.TrabajosDetalle.Remove(detalle);
+       
+        TrabajoDetalle.Cantidad = detalle.Cantidad;
+        TrabajoDetalle.ArticuloId = detalle.ArticuloId;
+    }
+
+    public async Task LimpiarMensaje()
+    {
+        Mensaje = string.Empty;
     }
 }

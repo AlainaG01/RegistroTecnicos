@@ -1,0 +1,165 @@
+﻿@page "/Tecnicos/Trabajos/Detalle/{TrabajoId:int}"
+
+@inject TrabajosService trabajosService
+@inject TrabajosDetalleService trabajoDetalleService
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+
+@*html*@
+<PageTitle>Agregar articulos</PageTitle>
+@if (!Verificado || (Trabajo.TrabajosDetalle == null || !Trabajo.TrabajosDetalle.Any()))
+{
+    <EditForm Model="Trabajo" OnValidSubmit="Guardar">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="container">
+            <div class="shadow-lg">
+                @*header*@
+                <div class="card-header">
+                    <h4>Agregar Articulos</h4>
+                </div>
+                @*Body*@
+                <div class="card-body">
+                    <h6>Datos del Trabajo</h6>
+                    <ul class="mt-5">
+                        <li><strong>TrabajoId: </strong>@Trabajo.TrabajoId</li>
+                        <li><strong>Fecha: </strong>@Trabajo.Fecha</li>
+                        <li><strong>Cliente: </strong>@Trabajo.Cliente.Nombres</li>
+                        <li><strong>Tecnico: </strong>@Trabajo.Tecnico.Nombres</li>
+                        <li><strong>Descripci&oacute;n: </strong>@Trabajo.Descripcion</li>
+                        <li><strong>PrioridadId: </strong>@Trabajo.Prioridad.PrioridadesId</li>
+                        <li><strong>Prioridad Descripcion: </strong>@Trabajo.Prioridad.Descripcion</li>
+                        <li><strong>Prioridad Tiempo: </strong>@Trabajo.Prioridad.Tiempo</li>
+                        <li><strong>Monto: </strong>@Trabajo.Monto</li>
+                    </ul>
+
+                    @*detalle*@
+                    <div class="border border-success p-3 mt-3">
+                        <h5>Trabajo Detalle</h5>
+
+                        <div class="row">
+                            <div class="col-auto">
+                                <SeleccionarArticulo 
+                                    ListaArticulo="ListaArticulos"
+                                    ArticuloId="TrabajoDetalle.ArticuloId"
+                                    Cantidad="TrabajoDetalle.Cantidad"
+                                    Precio="TrabajoDetalle.Precio"
+                                    ArticuloSeleccionado="AgregarArticulo" />
+                            </div>
+                        </div>
+                        <ul class="mt-3">
+                            @foreach (var detalle in Trabajo.TrabajosDetalle)
+                            {
+                                <li class="mt-2">
+                                    Articulo ID: @detalle.ArticuloId -- @detalle.Articulo?.Descripcion -- Cantidad: @detalle.Cantidad
+                                    -- Precio:$ @detalle.Articulo.Precio -- PrecioTotal: $ @detalle.Precio
+                                    <button type="button" @onclick="() => Eliminar(detalle)" class="btn btn-outline-danger btn-sm ms-2 bi bi-trash"></button>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+
+                </div>
+                @*footer*@
+                <div class="card-footer text-center mt-2">
+                    <a href="/Tecnicos/Trabajos/Index" class="btn btn-primary"><span class="bi bi-arrow-left"> Volver</span></a>
+                    <button type="submit" class="btn btn-success bi bi-floppy"> Guardar</button>
+                </div>
+            </div>
+        </div>
+    </EditForm>
+    @Mensaje
+}
+else
+{
+    <div class="container text-center mt-4">
+        <h4>Ya este trabajo se le han asignado los artículos</h4>
+        <h5>Si desea hacer alguna modificacion lo puede hacer en Edit</h5>
+        <button class="btn btn-primary mt-4" @onclick="Volver">Volver al índice</button>
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public int TrabajoId { get; set; }
+    public TrabajosDetalle TrabajoDetalle { get; set; } = new TrabajosDetalle();
+    public Trabajos Trabajo { get; set; } = new Trabajos();
+    public string Mensaje { get; set; } = string.Empty;
+    public bool Verificado { get; set; } = false;
+    public List<Articulos> ListaArticulos { get; set; } = new List<Articulos>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Trabajo = await trabajosService.BuscarConDetalles(TrabajoId);
+        ListaArticulos = await trabajoDetalleService.Listar(a => a.ArticuloId > 0);
+
+        if (Trabajo.TrabajosDetalle != null && Trabajo.TrabajosDetalle.Any())
+        {
+            Verificado = true;
+        }
+    }
+
+    private async Task AgregarArticulo((Articulos articulos, int cantidad) selection)
+    {
+
+        await LimpiarMensaje();
+
+        var articuloExistente = Trabajo.TrabajosDetalle
+            .FirstOrDefault(d => d.ArticuloId == selection.articulos.ArticuloId);
+       
+        if (articuloExistente != null)
+        {
+            articuloExistente.Cantidad += selection.cantidad;
+            articuloExistente.Costo = articuloExistente.Articulo.Costo * articuloExistente.Cantidad;
+            articuloExistente.Precio = articuloExistente.Articulo.Precio * articuloExistente.Cantidad;
+        }
+        else
+        {
+            var Detalle = new TrabajosDetalle
+                {
+                    ArticuloId = selection.articulos.ArticuloId,
+                    Cantidad = selection.cantidad,
+                    Articulo = selection.articulos,
+                    Costo = selection.articulos.Costo * selection.cantidad,
+                    Precio = selection.articulos.Precio * selection.cantidad,
+                    TrabajoId = Trabajo.TrabajoId
+                };
+
+            Trabajo.TrabajosDetalle.Add(Detalle);
+        }
+        TrabajoDetalle = new TrabajosDetalle();
+        await Task.CompletedTask;
+    }
+
+    public async Task Eliminar(TrabajosDetalle detalle)
+    {
+        Trabajo.TrabajosDetalle.Remove(detalle);
+        TrabajoDetalle.Cantidad = detalle.Cantidad;
+        TrabajoDetalle.ArticuloId = detalle.ArticuloId;
+    }
+
+    public async Task Guardar()
+    {
+        var guardar = await trabajosService.Guardar(Trabajo);
+
+        if (guardar)
+        {
+            Mensaje = "Los articulos se agregaron correctamente";
+            navigationManager.NavigateTo("/Tecnicos/Trabajos/Index");
+        }
+        else
+        {
+            Mensaje = "Los articulos no se agregaron correctamente";
+        }
+    }
+
+    public async Task LimpiarMensaje()
+    {
+        Mensaje = string.Empty;
+    }
+    public void Volver()
+    {
+        navigationManager.NavigateTo("/Tecnicos/Trabajos/Index");
+    }
+}

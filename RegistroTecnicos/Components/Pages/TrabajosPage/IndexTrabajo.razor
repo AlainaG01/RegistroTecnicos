@@ -64,7 +64,6 @@
                     <tr>
                         <th>TrabajoId</th>
                         <th>Fecha</th>
-                        
                         <th>ClienteId</th>
                         <th>Cliente</th>
                         <th>TecnicoId</th>
@@ -72,9 +71,10 @@
                         <th>Descripci&oacute;n</th>
                         <th>Prioridad</th>
                         <th>Monto</th>
-                        <th>Observar</th>
-                        <th>Editar</th>
-                        <th>Eliminar</th>
+                        <th>Articulos</th>
+                        <th>Details</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -92,6 +92,9 @@
                             <td>@trabajo.Monto</td>
 
                             <td>
+                                <a href="/Tecnicos/Trabajos/Detalle/@trabajo.TrabajoId" class="btn btn-outline-info bi bi-bag-plus-fill"></a>
+                            </td>
+                            <td>
                                 <a href="/Tecnicos/Trabajos/Details/@trabajo.TrabajoId" class="btn btn-outline-primary bi bi-eye-fill"></a>
                             </td>
 
@@ -102,6 +105,7 @@
                             <td>
                                 <a href="/Tecnico/Trabajos/Delete/@trabajo.TrabajoId" class="btn btn-outline-danger bi bi-trash-fill"></a>
                             </td>
+                           
                         </tr>
                     }
                 </tbody>
