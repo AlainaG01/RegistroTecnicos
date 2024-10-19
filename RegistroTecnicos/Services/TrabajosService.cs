@@ -28,6 +28,7 @@ public class TrabajosService
         return await _contexto.SaveChangesAsync() > 0;
     }
 
+
     private async Task<bool> Modificar(Trabajos trabajo)
     {
         await AfectarCantidad(trabajo.TrabajosDetalle.ToArray(), true);
