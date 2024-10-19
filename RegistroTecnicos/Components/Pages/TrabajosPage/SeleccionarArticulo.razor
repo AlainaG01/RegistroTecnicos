@@ -8,9 +8,12 @@
         }
 
     </InputSelect>
-
+    @*Cantidad*@
     <label class="col-form-label input-group-text">Cantidad</label>
     <InputNumber class="form-control" @bind-Value="Cantidad"></InputNumber>
+    @*Precio*@
+    <label class="col-form-label input-group-text">Precio</label>
+    <InputNumber class="form-control" @bind-Value="Precio" readonly></InputNumber>
     <button type="button" class="btn btn-success bi bi-plus-square" @onclick="ElegirArticulo"></button>
 </div>
 @if (!string.IsNullOrEmpty(Mensaje))
@@ -29,9 +32,29 @@
     public int Cantidad { get; set; }
 
     [Parameter]
+    public double Precio { get; set; }
+
+    [Parameter]
     public EventCallback<(Articulos articulo, int Cantidad)> ArticuloSeleccionado { get; set; }
 
     public string? Mensaje { get; set; } = string.Empty;
+
+
+    private void ActualizarPrecio()
+    {
+        // Buscar el artículo seleccionado
+        var articuloSeleccionado = ListaArticulo.FirstOrDefault(a => a.ArticuloId == ArticuloId);
+
+        if (articuloSeleccionado != null && Cantidad > 0)
+        {
+            // Calcular el precio basado en el artículo y la cantidad
+            Precio = articuloSeleccionado.Precio * Cantidad;
+        }
+        else
+        {
+            Precio = 0; // Si no hay artículo o la cantidad es 0
+        }
+    }
 
     private async Task ElegirArticulo()
     {
