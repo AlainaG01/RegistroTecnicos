@@ -23,12 +23,14 @@ public class TrabajosService
 
     private async Task<bool> Insertar(Trabajos trabajo)
     {
+        await AfectarCantidad(trabajo.TrabajosDetalle.ToArray(), true);
         _contexto.Trabajos.Add(trabajo);
         return await _contexto.SaveChangesAsync() > 0;
     }
 
     private async Task<bool> Modificar(Trabajos trabajo)
     {
+        await AfectarCantidad(trabajo.TrabajosDetalle.ToArray(), true);
         _contexto.Update(trabajo);
         var modificado = await _contexto.SaveChangesAsync() > 0;
         return modificado;
@@ -44,6 +46,11 @@ public class TrabajosService
 
     public async Task<bool> Eliminar(int trabajoId)
     {
+        var trabajo = _contexto.Trabajos.Find(trabajoId);
+        if (trabajo == null)
+            return false;
+
+        await AfectarCantidad(trabajo.TrabajosDetalle.ToArray(), false);
         return await _contexto.Trabajos
             .Include(t => t.TrabajosDetalle)
             .Where(e => e.TrabajoId == trabajoId)
@@ -84,6 +91,17 @@ public class TrabajosService
         return await _contexto.Trabajos
             .AnyAsync(e => e.TrabajoId == trabajoId);
     }
-    
 
+    public async Task AfectarCantidad(TrabajosDetalle[] detalles, bool resta)
+    {
+        foreach (var item in detalles)
+        {
+            var articulo = await _contexto.Articulos.SingleAsync(a => a.ArticuloId == item.ArticuloId);
+            if (resta)
+                articulo.Existencia -= item.Cantidad;
+            else
+                articulo.Existencia += item.Cantidad;
+        }
+        await _contexto.SaveChangesAsync(); // Guarda los cambios
+    }
 }
