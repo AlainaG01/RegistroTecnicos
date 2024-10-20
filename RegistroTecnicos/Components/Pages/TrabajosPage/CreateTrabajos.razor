@@ -94,7 +94,7 @@
             @*Footer*@
             <div class="card-footer text-center">
                 <button type="button" class="btn btn-primary bi bi-arrow-90deg-left" @onclick="Volver"></button>
-                <button type="submit" class="btn btn-success bi bi-floppy-fill">Guardar</button>
+                <button type="submit" class="btn btn-success">Siguiente</button>
 
             </div>
         </div>
@@ -142,7 +142,7 @@
         if (crear)
         {
             Mensaje = "Se ha creado correctamente el trabajo";
-            navigationManager.NavigateTo("/Tecnicos/Trabajos/Index");
+            navigationManager.NavigateTo($"/Tecnicos/Trabajos/Detalle/{Trabajo.TrabajoId}");
         }
         else
         {
