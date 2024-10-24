@@ -40,6 +40,7 @@ public class CotizacionesService(IDbContextFactory<Contexto> DbFactory)
     {
         await using var contexto = await DbFactory.CreateDbContextAsync();
         return await contexto.Cotizaciones
+            .Include(d => d.cotizacionesDetalle)
             .Where(c => c.CotizacionId == cotizacionId)
             .ExecuteDeleteAsync() > 0;
     }
@@ -48,6 +49,7 @@ public class CotizacionesService(IDbContextFactory<Contexto> DbFactory)
     {
         await using var contexto = await DbFactory.CreateDbContextAsync();
         return await contexto.Cotizaciones
+            .Include(d => d.cotizacionesDetalle)
             .FirstOrDefaultAsync(c => c.CotizacionId == id);
     }
 
@@ -55,6 +57,7 @@ public class CotizacionesService(IDbContextFactory<Contexto> DbFactory)
     {
         await using var contexto = await DbFactory.CreateDbContextAsync();
         return await contexto.Cotizaciones
+            .Include(d => d.cotizacionesDetalle)
             .AsNoTracking()
             .Where(criterio)
             .ToListAsync();
