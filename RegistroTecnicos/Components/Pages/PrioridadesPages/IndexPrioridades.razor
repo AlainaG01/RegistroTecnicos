@@ -6,10 +6,11 @@
 
 <PageTitle>Index</PageTitle>
 <div class="container">
-    <div class="shadow-lg">
+    <div class="card shadow-lg">
         @*header*@
-        <div class="card-header text-center">
-            <h3><strong>Listado de prioridades</strong></h3>
+        <div class="card-header d-flex justify-content-between">
+            <h5 class="card-title">Registro de prioridades</h5>
+            <a href="/Tecnicos/Prioridades/Creater" class="btn btn-outline-primary"><span class="bi bi-plus-square-fill-nav-menu mt-3"></span> Crear</a>
         </div>
         @*body*@
         <div class="card-body">
@@ -44,15 +45,15 @@
                 </div>
             </div>
             @* table-bordered *@
-            <table class="table table-bordered text-center mt-4">
-                <thead>
+            <table class="table table-hover text-center mt-4">
+                <thead class="table table-striped text-black">
                     <tr>
-                        <th>PrioridadId</th>
-                        <th>Descripcion</th>
-                        <th>Tiempo</th>
-                        <th>Observar</th>
-                        <th>Editar</th>
-                        <th>Eliminar</th>
+                        <th><strong>PrioridadId</strong></th>
+                        <th><strong>Descripcion</strong></th>
+                        <th><strong>Tiempo</strong></th>
+                        <th><strong>Observar</strong></th>
+                        <th><strong>Editar</strong></th>
+                        <th><strong>Eliminar</strong></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -77,11 +78,8 @@
                 </tbody>
             </table>
         </div>
-        <div class="card-footer">
-            <p><strong>Total de prioridades: </strong>@ListaPrioridades.Count</p>
-            <div class="col-3">
-                <a href="/Tecnicos/Prioridades/Creater" class="btn btn-outline-primary">Crear</a>
-            </div>
+        <div class="card-footer d-flex justify-content-between">
+            <label>Cantidad: @ListaPrioridades.Count</label>
         </div>
     </div>
 </div>

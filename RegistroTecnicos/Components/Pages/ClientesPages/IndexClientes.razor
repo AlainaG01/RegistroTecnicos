@@ -7,11 +7,12 @@
 @*HTML*@
 <PageTitle>Index</PageTitle>
 <div class="container">
-    <div class="shadow-lg">
+    <div class="card shadow-lg">
 
         @*header*@
-        <div class="card-header text-center">
-            <h3><strong>Listado de Clientes</strong></h3>
+        <div class="card-header d-flex justify-content-between">
+            <h5 class="card-title"><strong>Registro de Clientes</strong></h5>
+            <a href="/Tecnicos/Clientes/Create" class="btn btn-outline-primary"><span class="bi bi-plus-square-fill-nav-menu mt-3"></span>Crear</a>
         </div>
 
         @*body*@
@@ -56,15 +57,15 @@
 
 
             </div>
-            <table class="table table-bordered text-center mt-4">
-                <thead>
+            <table class="table table-hover text-center mt-4">
+                <thead class="table table-striped text-black">
                     <tr>
-                        <th>ClienteId</th>
-                        <th>Nombres</th>
-                        <th>WhatsApp</th>
-                        <th>Observar</th>
-                        <th>Editar</th>
-                        <th>Eliminar</th>
+                        <th><strong>ClienteId</strong></th>
+                        <th><strong>Nombres</strong></th>
+                        <th><strong>WhatsApp</strong></th>
+                        <th><strong>Observar</strong></th>
+                        <th><strong>Editar</strong></th>
+                        <th><strong>Eliminar</strong></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -92,12 +93,8 @@
             </table>
         </div>
         @*footer*@
-        <div class="card-footer">
-            <p><strong>Total de Clientes: </strong>@ListaClientes.Count</p>
-            @*Crear*@
-            <div class="col-3">
-                <a href="/Tecnicos/Clientes/Create" class="btn btn-outline-primary">Crear</a>
-            </div>
+        <div class="card-footer d-flex justify-content-between">
+            <label>Cantidad: @ListaClientes.Count</label>
         </div>
     </div>
 </div>
