@@ -55,7 +55,24 @@
                     <button type="button" class="btn btn-outline-secondary bi bi-arrow-clockwise" @onclick="Restablecer"></button>
                 </div>
 
+                @*FiltroFecha*@
+                <div class="row mt-3">
 
+                    @*Desde*@
+                    <div class="col-3">
+                        <label class="col-form-label"><strong>Desde</strong></label>
+                        <InputDate class="form-control" @bind-Value="Desde"></InputDate>
+                    </div>
+
+                    @*Hasta*@
+                    <div class="col-3">
+                        <label class="col-form-label"><strong>Hasta</strong></label>
+                        <div class="input-group">
+                            <InputDate class="form-control" @bind-Value="Hasta"></InputDate>
+                        </div>
+
+                    </div>
+                </div>
             </div>
             <table class="table table-hover text-center mt-4">
                 <thead class="table table-striped text-black">
@@ -105,9 +122,15 @@
     public string Filtro { get; set; } = string.Empty;
     public string ValorFiltro { get; set; } = string.Empty;
 
+    public DateTime? Desde { get; set; }
+
+    public DateTime? Hasta { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         ListaClientes = await clientesService.Listar(e => e.ClienteId > 0);
+        Desde = null;
+        Hasta = null;
     }
 
     private async Task Buscar()
@@ -116,6 +139,9 @@
         {
             if (Filtro == "Nombres")
                 ListaClientes = await clientesService.Listar(e => e.Nombres.ToLower().Contains(ValorFiltro.ToLower()));
+            else if (Filtro == "Fecha")
+                ListaClientes = await clientesService
+                .Listar(f => f.Fecha >= Desde && f.Fecha <= Hasta);
         }
         else
         {

@@ -43,6 +43,25 @@
                 <div class="col-auto">
                     <button type="button" class="btn btn-outline-secondary bi bi-arrow-clockwise" @onclick="Restablecer"></button>
                 </div>
+
+                @*FiltroFecha*@
+                <div class="row mt-3">
+
+                    @*Desde*@
+                    <div class="col-3">
+                        <label class="col-form-label"><strong>Desde</strong></label>
+                        <InputDate class="form-control" @bind-Value="Desde"></InputDate>
+                    </div>
+
+                    @*Hasta*@
+                    <div class="col-3">
+                        <label class="col-form-label"><strong>Hasta</strong></label>
+                        <div class="input-group">
+                            <InputDate class="form-control" @bind-Value="Hasta"></InputDate>
+                        </div>
+
+                    </div>
+                </div>
             </div>
             @* table-bordered *@
             <table class="table table-hover text-center mt-4">
@@ -85,16 +104,19 @@
 </div>
 
 @code {
-    
+
     public List<Prioridades> ListaPrioridades { get; set; } = new List<Prioridades>();
 
     public string Filtro { get; set; } = string.Empty;
     public string ValorFiltro { get; set; } = string.Empty;
+    public DateTime? Desde { get; set; }
+    public DateTime? Hasta { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         ListaPrioridades = await prioridadesService.Listar(e => e.PrioridadesId > 0);
-
+        Desde = null;
+        Hasta = null;
     }
 
     private async Task Buscar()
@@ -110,6 +132,12 @@
                 ListaPrioridades = await prioridadesService.Listar(e => e.Tiempo == tiempo);
 
             }
+            else if (Filtro == "Fecha")
+            {
+                    ListaPrioridades = await prioridadesService
+                    .Listar(f => f.Fecha >= Desde && f.Fecha <= Hasta);
+            }
+            
 
         }
         else
