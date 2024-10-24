@@ -5,19 +5,12 @@ using System.Linq.Expressions;
 
 namespace RegistroTecnicos.Services;
 
-public class TrabajosDetalleService
+public class TrabajosDetalleService(IDbContextFactory<Contexto> DbFactory)
 {
-    private readonly Contexto _contexto;
-
-    public TrabajosDetalleService(Contexto contexto)
-    {
-        _contexto = contexto;
-    }
-
-
     public async Task<List<Articulos>> Listar(Expression<Func<Articulos, bool>> criterio)
     {
-        return await _contexto.Articulos.Where(criterio).ToListAsync();
+        await using var contexto = await DbFactory.CreateDbContextAsync();
+        return await contexto.Articulos.Where(criterio).ToListAsync();
     }
     
     

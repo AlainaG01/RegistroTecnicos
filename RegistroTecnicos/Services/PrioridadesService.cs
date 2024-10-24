@@ -5,30 +5,26 @@ using System.Linq.Expressions;
 
 namespace RegistroTecnicos.Services;
 
-public class PrioridadesService
+public class PrioridadesService(IDbContextFactory<Contexto> DbFactory)
 {
-    private readonly Contexto _contexto;
-
-    public PrioridadesService(Contexto contexto)
-    {
-        _contexto = contexto;
-    }
-
     private async Task<bool> Existe(int prioridadId)
     {
-        return await _contexto.Prioridades.AnyAsync(e => e.PrioridadesId == prioridadId);
+        await using var contexto = await DbFactory.CreateDbContextAsync();
+        return await contexto.Prioridades.AnyAsync(e => e.PrioridadesId == prioridadId);
     }
 
     private async Task<bool> Insertar(Prioridades prioridad)
     {
-        _contexto.Prioridades.Add(prioridad);
-        return await _contexto.SaveChangesAsync() > 0;
+        await using var contexto = await DbFactory.CreateDbContextAsync();
+        contexto.Prioridades.Add(prioridad);
+        return await contexto.SaveChangesAsync() > 0;
     }
 
     private async Task<bool> Modificar(Prioridades prioridad)
     {
-        _contexto.Update(prioridad);
-        var modificado = await _contexto.SaveChangesAsync() > 0;
+        await using var contexto = await DbFactory.CreateDbContextAsync();
+        contexto.Update(prioridad);
+        var modificado = await contexto.SaveChangesAsync() > 0;
         return modificado;
     }
 
@@ -46,24 +42,34 @@ public class PrioridadesService
 
     public async Task<bool> Eliminar(int prioridadId)
     {
-        return await _contexto.Prioridades
+        await using var contexto = await DbFactory.CreateDbContextAsync();
+        return await contexto.Prioridades
             .Where(e => e.PrioridadesId == prioridadId)
             .ExecuteDeleteAsync() > 0;
     }
 
     public async Task<Prioridades> Buscar(int id)
     {
-        return await _contexto.Prioridades.FirstOrDefaultAsync(e => e.PrioridadesId == id);
+        await using var contexto = await DbFactory.CreateDbContextAsync();
+        return await contexto.Prioridades
+            .FirstOrDefaultAsync(e => e.PrioridadesId == id);
     }
 
     public async Task<List<Prioridades>> Listar(Expression<Func<Prioridades, bool>> criterio)
     {
-        return await _contexto.Prioridades.AsNoTracking().Where(criterio).ToListAsync();
+        await using var contexto = await DbFactory.CreateDbContextAsync();
+        return await contexto.Prioridades
+            .AsNoTracking()
+            .Where(criterio)
+            .ToListAsync();
     }
 
     public async Task<bool> ExistePrioridad(int id, int tiempo, string descripcion)
     {
-        return await _contexto.Prioridades
-            .AnyAsync(e => e.PrioridadesId != id && e.Tiempo == tiempo || e.Descripcion.ToLower().Equals(descripcion.ToLower()));
+        await using var contexto = await DbFactory.CreateDbContextAsync();
+        return await contexto.Prioridades
+            .AnyAsync(e => e.PrioridadesId != id
+            && e.Tiempo == tiempo 
+            || e.Descripcion.ToLower().Equals(descripcion.ToLower()));
     }
 }
