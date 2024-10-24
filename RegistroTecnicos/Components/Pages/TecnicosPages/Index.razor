@@ -8,11 +8,12 @@
 @*HTML*@
 <PageTitle>Index</PageTitle>
 <div class="container">
-    <div class="shadow-lg">
+    <div class="card shadow-lg">
 
         @*header*@
-        <div class="card-header text-center">
-            <h3><strong>Listado de T&eacute;cnicos</strong></h3>
+        <div class="card-header d-flex justify-content-between">
+            <h5 class="card-title">Registro de T&eacute;cnicos</h5>
+            <a href="/Tecnicos/Create" class="btn btn-outline-primary"><span class="bi bi-plus-square mt-3"></span> Crear</a>
         </div>
 
         @*body*@
@@ -59,16 +60,16 @@
 
                 
             </div>
-            <table class="table table-bordered text-center mt-4">
-                <thead>
+            <table class="table table-hover text-center mt-4">
+                <thead class="table table-striped text-black">
                     <tr>
-                        <th>TecnicoId</th>
-                        <th>Nombres</th>
-                        <th>Descripci&oacute;n</th>
-                        <th>SueldoHora</th>
-                        <th>Observar</th>
-                        <th>Editar</th>
-                        <th>Eliminar</th>
+                        <th><strong>TecnicoId</strong></th>
+                        <th><strong>Nombres</strong></th>
+                        <th><strong>Descripci&oacute;n</strong></th>
+                        <th><strong>SueldoHora</strong></th>
+                        <th><strong>Observar</strong></th>
+                        <th><strong>Editar</strong></th>
+                        <th><strong>Eliminar</strong></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -96,12 +97,9 @@
             </table>
         </div>
         @*footer*@
-        <div class="card-footer">
-            <p><strong>Total de T&eacute;cnicos: </strong>@ListaTecnicos.Count</p>
-            @*Crear*@
-            <div class="col-3">
-                <a href="/Tecnicos/Create" class="btn btn-outline-primary">Crear</a>
-            </div>
+        <div class="card-footer d-flex justify-content-between">
+            <label>Cantidad: @ListaTecnicos.Count</label>
+            <label>Total:$ @ListaTecnicos.Sum(p => p.SueldoHora)</label>
         </div>
     </div>
 </div>

@@ -11,54 +11,55 @@
     <DataAnnotationsValidator />
     @*Formulario*@
     <div class="container">
-        <div class="shadow-lg">
+        <div class="card shadow-lg">
+
             @*Header*@
             <div class="card-header text-center">
-                <h3><strong>Modificar T&eacute;cnico</strong></h3>
+                <h5 class="card-title">Modificar T&eacute;cnico</h5>
             </div>
 
             @*Body*@
             <div class="card-body">
-                <div class="d-flex flex-column align-items-center justify-content-center text-lg-center">
 
-                    @*Id*@
-                    <div class="col-4 ms-3">
-                        <label class="form-label"><strong>TecnicoId</strong></label>
-                        <InputNumber class="form-control" @bind-Value="Tecnico.TecnicoId" readonly></InputNumber>
-                    </div>
-
-                    @*Nombre*@
-                    <div class="col-4 ms-3">
-                        <label class="form-label"><strong>Nombres</strong></label>
-                        <InputText class="form-control" @bind-Value="Tecnico.Nombres"></InputText>
-                        <ValidationMessage For="(()=> Tecnico.Nombres)"/>
-                    </div>
-
-                    @*SueldoHora*@
-                    <div class="col-4 ms-3">
-                        <label class="form-label"><strong>SueldoHora</strong></label>
-                        <InputNumber class="form-control" @bind-Value="Tecnico.SueldoHora"></InputNumber>
-                        <ValidationMessage For="(()=> Tecnico.SueldoHora)" />
-                    </div>
-
-                    @*Tipo Tecnico*@
-                    <div class="col-4 ms-3">
-                        <label class="form-label"><strong>Descripci&oacute;n</strong></label>
-                        <InputSelect class="form-select" @bind-Value="Tecnico.TiposTecnicosId">
-                            <option ="" selected disabled>Elija una opci&oacute;n</option>
-                            @foreach (var tipoTecnico in ListaTiposTecnicos)
-                            {
-                                <option value="@tipoTecnico.TiposTecnicosId">@tipoTecnico.Descripcion</option>
-                            }
-                        </InputSelect>
-                    </div>
+                @*Id*@
+                <div class="mb-3">
+                    <label class="form-label"><strong>TecnicoId</strong></label>
+                    <InputNumber class="form-control"
+                                 @bind-Value="Tecnico.TecnicoId" readonly></InputNumber>
                 </div>
-                
+
+                @*Nombre*@
+                <div class="mb-3">
+                    <label class="form-label"><strong>Nombres</strong></label>
+                    <InputText class="form-control"
+                               @bind-Value="Tecnico.Nombres"></InputText>
+                    <ValidationMessage For="(()=> Tecnico.Nombres)" />
+                </div>
+
+                @*SueldoHora*@
+                <div class="mb-3">
+                    <label class="form-label"><strong>SueldoHora</strong></label>
+                    <InputNumber class="form-control"
+                                 @bind-Value="Tecnico.SueldoHora"></InputNumber>
+                    <ValidationMessage For="(()=> Tecnico.SueldoHora)" />
+                </div>
+                @*Tipo Tecnico*@
+                <div class="mb-3">
+                    <label class="form-label"><strong>Descripci&oacute;n</strong></label>
+                    <InputSelect class="form-select" @bind-Value="Tecnico.TiposTecnicosId">
+                        <option ="0" selected disabled>Elija una opci&oacute;n</option>
+                        @foreach (var tipoTecnico in ListaTiposTecnicos)
+                        {
+                            <option value="@tipoTecnico.TiposTecnicosId">@tipoTecnico.Descripcion</option>
+                        }
+                    </InputSelect>
+                </div>
             </div>
             @*Footer*@
             <div class="card-footer text-center">
-                <button type="button" class="btn btn-primary bi bi-arrow-90deg-left" @onclick="Volver"></button>
-                <button type="submit" class="btn btn-success bi bi-floppy-fill" @onclick="Modificar"></button>
+                <a href="/Tecnicos/Index" class="btn btn-secondary"> <span class="bi bi-arrow-left"></span> Volver</a>
+                <button type="submit" class="btn btn-success bi bi-floppy-fill"> Modificar</button>
+
             </div>
         </div>
     </div>
