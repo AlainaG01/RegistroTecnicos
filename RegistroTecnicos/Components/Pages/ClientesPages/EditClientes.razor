@@ -12,25 +12,25 @@
     <ValidationSummary />
     @*Formulario*@
     <div class="container">
-        <div class="shadow-lg">
+        <div class="card shadow-lg">
 
             @*Header*@
             <div class="card-header">
-                <h3>Editar Cliente</h3>
+                <h5 class="card-title">Modificar Cliente</h5>
             </div>
 
             @*Body*@
-            <div class="card-body d-flex flex-column align-items-center justify-content-center text-lg-center">
+            <div class="card-body">
 
                 @*Id*@
-                <div class="col-4 ms-3">
+                <div class="mb-3">
                     <label class="form-label"><strong>ClienteId</strong></label>
                     <InputNumber class="form-control"
                                  @bind-Value="Cliente.ClienteId" readonly></InputNumber>
                 </div>
 
                 @*Nombre*@
-                <div class="col-4 ms-3">
+                <div class="mb-3">
                     <label class="form-label"><strong>Nombres</strong></label>
                     <InputText class="form-control"
                                @bind-Value="Cliente.Nombres"></InputText>
@@ -38,15 +38,15 @@
                 </div>
 
                 @*WhatsApp*@
-                <div class="col-4 ms-3">
+                <div class="mb-3">
                     <label class="form-label"><strong>WhatsApp</strong></label>
                     <InputText class="form-control" @bind-Value="Cliente.WhatsApp"></InputText>
                     <ValidationMessage For="(() => Cliente.WhatsApp)" />
                 </div>
             </div>
             @*Footer*@
-            <div class="card-footer text-center">
-                <button type="button" class="btn btn-primary bi bi-arrow-90deg-left" @onclick="Volver"></button>
+            <div class="card-footer text-center mt-2">
+                <a href="/Tecnicos/Clientes/Index" class="btn btn-secondary"> <span class="bi bi-arrow-left"></span> Volver</a>
                 <button type="submit" class="btn btn-success bi bi-floppy-fill"></button>
 
             </div>

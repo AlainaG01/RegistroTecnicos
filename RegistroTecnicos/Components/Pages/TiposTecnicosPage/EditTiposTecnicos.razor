@@ -11,35 +11,34 @@
     <DataAnnotationsValidator />
     @*Formulario*@
     <div class="container">
-        <div class="shadow-lg">
+        <div class="card shadow-lg">
 
             @*Header*@
-            <div class="card-header">
-                <h3>Modificar Tipo T&eacute;cnico</h3>
+            <div class="card-header text-center">
+                <h5 class="card-title">Modificar Tipo T&eacute;cnico</h5>
             </div>
 
             @*Body*@
             <div class="card-body">
-                <div class="d-flex flex-column align-items-center justify-content-center text-lg-center">
-                    @*Id*@
-                    <div class="col-4 ms-3">
-                        <label class="form-label"><strong>TipoTecnicoId</strong></label>
-                        <InputNumber class="form-control" @bind-Value="TipoTecnico.TiposTecnicosId" readonly></InputNumber>
-                    </div>
 
-                    @*Descripcion*@
-                    <div class="col-4 ms-3">
-                        <label class="form-label"><strong>Descripci&oacute;n</strong></label>
-                        <InputText class="form-control"
-                                   @bind-Value="TipoTecnico.Descripcion"></InputText>
-                        <ValidationMessage For="(()=> TipoTecnico.Descripcion)" />
-                    </div>
+                @*Id*@
+                <div class="mb-3">
+                    <label class="form-label"><strong>TipoTecnicoId</strong></label>
+                    <InputNumber class="form-control" @bind-Value="TipoTecnico.TiposTecnicosId" readonly></InputNumber>
                 </div>
-                
+
+                @*Descripcion*@
+                <div class="mb-3">
+                    <label class="form-label"><strong>Descripci&oacute;n</strong></label>
+                    <InputText class="form-control"
+                               @bind-Value="TipoTecnico.Descripcion"></InputText>
+                    <ValidationMessage For="(()=> TipoTecnico.Descripcion)" />
+                </div>
             </div>
+
             @*Footer*@
-            <div class="card-footer text-center">
-                <button type="button" class="btn btn-primary bi bi-arrow-90deg-left" @onclick="Volver"></button>
+            <div class="card-footer text-center mt-2">
+                <a href="/Tecnicos/TiposTecnicos/Index" class="btn btn-secondary"> <span class="bi bi-arrow-left"></span> Volver</a>
                 <button type="button" class="btn btn-success bi bi-floppy-fill" @onclick="Modificar"></button>
             </div>
         </div>

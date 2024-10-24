@@ -16,7 +16,7 @@
     <ValidationSummary />
     @*Formulario*@
     <div class="container">
-        <div class="shadow-lg">
+        <div class="card shadow-lg">
 
             @*Header*@
             <div class="card-header">
@@ -27,20 +27,20 @@
             <div class="card-body">
 
                 @*Id*@
-                <div class="col-4 ms-3">
+                <div class="mb-3">
                     <label class="form-label ms-4"><strong>TrabajoId</strong></label>
                     <InputNumber class="form-control"
                                  @bind-Value="Trabajo.TrabajoId" readonly></InputNumber>
                 </div>
 
                 @*Fecha*@
-                <div class="col-4 ms-3">
+                <div class="mb-3">
                     <label class="form-label ms-4"><strong>Fecha</strong></label>
                     <InputDate class="form-control" @bind-Value="Trabajo.Fecha"></InputDate>
                 </div>
 
                 @*Cliente*@
-                <div class="col-4 ms-3">
+                <div class="mb-3">
                     <label class="form-label ms-4"><strong>Cliente</strong></label>
                     <InputSelect class="form-select" @bind-Value="Trabajo.ClienteId">
                         <option ="" selected disabled>Elija una opci&oacute;n</option>
@@ -52,7 +52,7 @@
                 </div>
 
                 @*Tecnico*@
-                <div class="col-4 ms-3">
+                <div class="mb-3">
                     <label class="form-label ms-4"><strong>Tecnico</strong></label>
                     <InputSelect class="form-select" @bind-Value="Trabajo.TecnicoId">
                         <option ="" selected disabled>Elija una opci&oacute;n</option>
@@ -64,7 +64,7 @@
                 </div>
 
                 @*Descripcion*@
-                <div class="col-4 ms-3">
+                <div class="mb-3">
                     <label class="form-label ms-4"><strong>Descripci&oacute;n</strong></label>
                     <InputText class="form-control"
                                @bind-Value="Trabajo.Descripcion"></InputText>
@@ -72,7 +72,7 @@
                 </div>
 
                  @*Prioridad*@
-                <div class="col-4 ms-3">
+                <div class="mb-3">
                     <label class="form-label ms-4"><strong>Prioridad</strong></label>
                     <InputSelect class="form-select" @bind-Value="Trabajo.PrioridadId">
                         <option ="" selected disabled>Elija una opci&oacute;n</option>
@@ -84,7 +84,7 @@
                 </div>
 
                 @*Monto*@
-                <div class="col-4 ms-3">
+                <div class="mb-3">
                     <label class="form-label ms-4"><strong>Monto</strong></label>
                     <InputNumber class="form-control"
                                  @bind-Value="Trabajo.Monto"></InputNumber>
@@ -118,8 +118,8 @@
                 </div>
             </div>
             @*Footer*@
-            <div class="card-footer text-center">
-                <button type="button" class="btn btn-primary bi bi-arrow-90deg-left" @onclick="Volver"></button>
+            <div class="card-footer text-center mt-2">
+                <a href="/Tecnicos/Trabajos/Index" class="btn btn-secondary"> <span class="bi bi-arrow-left"></span> Volver</a>
                 <button type="submit" class="btn btn-success bi bi-floppy-fill"></button>
               
             </div>
