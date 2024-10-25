@@ -52,11 +52,20 @@ public class CotizacionesService(IDbContextFactory<Contexto> DbFactory)
             .Include(d => d.cotizacionesDetalle)
             .FirstOrDefaultAsync(c => c.CotizacionId == id);
     }
-
+    public async Task<Cotizaciones> BuscarConDetalles(int Id)
+    {
+        await using var contexto = await DbFactory.CreateDbContextAsync();
+        return await contexto.Cotizaciones
+            .Include(t => t.Cliente)
+            .Include(t => t.cotizacionesDetalle)
+            .ThenInclude(td => td.Articulo)
+            .FirstOrDefaultAsync(t => t.CotizacionId == Id);
+    }
     public async Task<List<Cotizaciones>> Listar(Expression<Func<Cotizaciones, bool>> criterio)
     {
         await using var contexto = await DbFactory.CreateDbContextAsync();
         return await contexto.Cotizaciones
+            .Include(c => c.Cliente)
             .Include(d => d.cotizacionesDetalle)
             .AsNoTracking()
             .Where(criterio)
