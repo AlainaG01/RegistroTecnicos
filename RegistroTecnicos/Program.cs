@@ -21,7 +21,7 @@ builder.Services.AddScoped<ClientesService>();
 builder.Services.AddScoped<TrabajosService>();
 builder.Services.AddScoped<PrioridadesService>();
 builder.Services.AddScoped<TrabajosDetalleService>();
-builder.Services.AddScoped<CotizacionesDetalleService>();
+builder.Services.AddScoped<CotizacionesService>();
 builder.Services.AddScoped<CotizacionesDetalleService>();
 
 var app = builder.Build();
