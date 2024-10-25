@@ -1,0 +1,71 @@
+﻿@page "/Tecnicos/Cotizacion/Details/{CotizacionId:int}"
+
+@inject CotizacionesService cotizacionesService
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+
+@*HTML*@
+<PageTitle>Details</PageTitle>
+<div class="container">
+    <div class="shadow-lg">
+        @*header*@
+        <div class="card-header text-center">
+            <h3><strong>Cotizacion</strong></h3>
+        </div>
+
+        @*body*@
+        <div class="card-body">
+
+            <ul>
+                <li><strong>CotizacionId: </strong>@Cotizacion.CotizacionId</li>
+                <li><strong>Fecha: </strong>@Cotizacion.Fecha</li>
+                <li><strong>ClienteId: </strong>@Cotizacion.ClienteId</li>
+                <li><strong>Cliente: </strong>@Cotizacion.Cliente.Nombres</li>
+                <li><strong>Observacion: </strong>@Cotizacion.Observacion</li>
+                <li><strong>Monto: </strong>@Cotizacion.Monto</li>
+            </ul>
+            <div class="border border-success p-2 mt-2">
+                <h5>Detalles de articulos Cotizados</h5>
+                <div>
+                    <table class="table table-light">
+                        <thead class="table-striped">
+                            <tr class="text-center">
+                                <th>Artículo</th>
+                                <th>Cantidad</th>
+                                <th>Precio</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var Detalle in Cotizacion.cotizacionesDetalle)
+                            {
+                                <tr class="text-center">
+                                    <td>@Detalle.ArticuloId</td>
+                                    <td>@Detalle.Cantidad</td>
+                                    <td>@Detalle.Precio</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*Footer*@
+    <div class="card-footer text-center">
+        <a href="/Tecnicos/Cotizacion/Index" class="btn btn-secondary"> <span class="bi bi-arrow-left"></span> Volver</a>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int CotizacionId { get; set; }
+
+    public Cotizaciones Cotizacion { get; set; } = new Cotizaciones();
+
+    public string Mensaje { get; set; } = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Cotizacion = await cotizacionesService.BuscarConDetalles(CotizacionId);
+    }
+}
