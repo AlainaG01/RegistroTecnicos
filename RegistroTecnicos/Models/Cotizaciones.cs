@@ -11,9 +11,9 @@ public class Cotizaciones
     [Required(ErrorMessage = "Campo obligatorio")]
     public DateTime Fecha { get; set; } = DateTime.Now;
 
-    [ForeignKey("Cliente")]
+    [ForeignKey("ClienteId")]
     public int ClienteId { get; set; }
-    public Clientes Cliente { get; set; }
+    public Clientes? Cliente { get; set; }
 
     [Required(ErrorMessage = "Campo obligatorio")]
     [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Solo se permiten letras")]

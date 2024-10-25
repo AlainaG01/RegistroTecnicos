@@ -20,4 +20,7 @@ public class Tecnicos
     public int TiposTecnicosId { get; set; }
 
     public TiposTecnicos? TipoTecnico { get; set; }
+
+    [Required(ErrorMessage = "Campo obligatorio")]
+    public DateTime Fecha { get; set; } = DateTime.Now;
 }

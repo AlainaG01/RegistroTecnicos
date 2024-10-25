@@ -8,11 +8,11 @@ public class CotizacionesDetalle
     [Key]
     public int DetalleId { get; set; }
 
-    [ForeignKey("Cotizaciones")]
+    [ForeignKey("Cotizacion")]
     public int CotizacionId { get; set; }
     public Cotizaciones? Cotizacion { get; set; }
 
-    [ForeignKey("Articulos")]
+    [ForeignKey("Articulo")]
     public int ArticuloId { get; set; }
     public Articulos? Articulo { get; set; }
 

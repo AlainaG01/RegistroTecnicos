@@ -8,11 +8,11 @@ public class TrabajosDetalle
     [Key]
     public int DetalleId { get; set; }
 
-    [ForeignKey("TrabajoId")]
+    [ForeignKey("Trabajo")]
     public int TrabajoId { get; set; }
     public Trabajos? Trabajo { get; set; }
 
-    [ForeignKey("ArticuloId")]
+    [ForeignKey("Articulo")]
     public int ArticuloId { get; set; }
     public Articulos? Articulo { get; set; }
 
