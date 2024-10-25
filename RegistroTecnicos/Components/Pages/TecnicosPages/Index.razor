@@ -42,6 +42,7 @@
                         <option value="Id">Id</option>
                         <option value="Nombres">Nombres</option>
                         <option value="Descripcion">Descripcion</option>
+                        <option value="Fecha">Fecha</option>
                     </InputSelect>
                 </div>
 
@@ -143,20 +144,23 @@
             if (Filtro == "Id" && int.TryParse(ValorFiltro, out int tecnicoId))
                 ListaTecnicos = await tecnicoService.Listar(e => e.TecnicoId == tecnicoId);
             else if (Filtro == "Nombres")
-                ListaTecnicos = await tecnicoService.Listar(e => e.Nombres.ToLower().Contains(ValorFiltro.ToLower()));
+                ListaTecnicos = await tecnicoService.Listar(e => e.Nombres.ToLower().Contains(ValorFiltro.ToLower()) && e.Fecha >= Desde && e.Fecha <= Hasta);
             else if (Filtro == "Descripcion")
             {
-                ListaTecnicos = await tecnicoService.Listar(e => e.TipoTecnico.Descripcion.ToLower().Contains(ValorFiltro.ToLower()));
+                ListaTecnicos = await tecnicoService.Listar(e => e.TipoTecnico.Descripcion.ToLower().Contains(ValorFiltro.ToLower()) && e.Fecha >= Desde && e.Fecha <= Hasta);
             }
-            else if (Filtro == "Fecha")
-            {
-                ListaTecnicos = await tecnicoService
-               .Listar(f => f.Fecha >= Desde && f.Fecha <= Hasta);
-            }
-           
+
+    }
+        else if (Filtro == "Fecha")
+        {
+            ListaTecnicos = await tecnicoService
+           .Listar(f => f.Fecha >= Desde && f.Fecha <= Hasta);
         }
         else
+        {
             ListaTecnicos = await tecnicoService.Listar(e => e.TecnicoId > 0);
+        }
+        
     }
 
     private async Task Restablecer()

@@ -153,27 +153,23 @@
         {
             if(Filtro == "Descripcion")
             {
-                ListaTrabajos = await trabajosService.Listar(e => e.Descripcion.ToLower().Contains(ValorFiltro.ToLower()));
-            }else if(Filtro == "Fecha")
-            {
-                if (DateTime.TryParse(ValorFiltro, out DateTime fechaFiltro))
-                {
-                    ListaTrabajos = await trabajosService.Listar(e => e.Fecha.Date == fechaFiltro.Date);
-                }
+                ListaTrabajos = await trabajosService.Listar(e => e.Descripcion.ToLower().Contains(ValorFiltro.ToLower()) && e.Fecha >= Desde && e.Fecha <= Hasta);
             }
-            else if (Filtro == "Fecha")
-            {
-                ListaTrabajos = await trabajosService
-                .Listar(f => f.Fecha >= Desde && f.Fecha <= Hasta);
-            }
-            
             else if (Filtro == "Prioridad")
             {
-                ListaTrabajos = await trabajosService.Listar(e => e.Prioridad.Descripcion.ToLower().Contains(ValorFiltro.ToLower()));
+                ListaTrabajos = await trabajosService.Listar(e => e.Prioridad.Descripcion.ToLower().Contains(ValorFiltro.ToLower()) && e.Fecha >= Desde && e.Fecha <= Hasta);
             }
         }
+        else if (Filtro == "Fecha")
+        {
+            ListaTrabajos = await trabajosService
+            .Listar(f => f.Fecha >= Desde && f.Fecha <= Hasta);
+        }
         else
+        {
             ListaTrabajos = await trabajosService.Listar(e => e.TrabajoId > 0);
+        }
+        
     }
 
     private async Task Restablecer()

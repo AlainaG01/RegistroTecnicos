@@ -136,16 +136,15 @@
         {
             if (Filtro == "Cliente")
             {
-                ListaCotizaciones = await cotizacionesService.Listar(e => e.Cliente.Nombres.ToLower().Contains(ValorFiltro.ToLower()));
+                ListaCotizaciones = await cotizacionesService.Listar(e => e.Cliente.Nombres.ToLower().Contains(ValorFiltro.ToLower()) && e.Fecha >= Desde && e.Fecha <= Hasta);
             }
-            else if (Filtro == "Fecha")
-            {
-                ListaCotizaciones = await cotizacionesService
-                .Listar(f => f.Fecha >= Desde && f.Fecha <= Hasta);
-            }
-
 
         }
+        else if (Filtro == "Fecha")
+        {
+            ListaCotizaciones = await cotizacionesService
+            .Listar(f => f.Fecha >= Desde && f.Fecha <= Hasta);
+        } 
         else
         {
             ListaCotizaciones = await cotizacionesService.Listar(e => e.CotizacionId > 0);

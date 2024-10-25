@@ -39,6 +39,7 @@
                         <option value="" selected disabled>Elija una opci&oacute;n</option>
                         <option value="Id">Id</option>
                         <option value="Descripcion">Descripcion</option>
+                        <option value="Fecha">Fecha</option>
                     </InputSelect>
                 </div>
 
@@ -136,12 +137,18 @@
             if (Filtro == "Id" && int.TryParse(ValorFiltro, out int id))
                 ListaTipoTecnicos = await tiposTecnicosService.Listar(e => e.TiposTecnicosId == id);
             else if (Filtro == "Descripcion")
-                ListaTipoTecnicos = await tiposTecnicosService.Listar(e => e.Descripcion.ToLower().Contains(ValorFiltro.ToLower()));
-            else if (Filtro == "Fecha")
-                ListaTipoTecnicos = await tiposTecnicosService.Listar(f => f.Fecha >= Desde && f.Fecha <= Hasta);
+                ListaTipoTecnicos = await tiposTecnicosService.Listar(e => e.Descripcion.ToLower().Contains(ValorFiltro.ToLower()) && e.Fecha >= Desde && e.Fecha <= Hasta);
+
+        }
+        else if (Filtro == "Fecha")
+        {
+            ListaTipoTecnicos = await tiposTecnicosService.Listar(f => f.Fecha >= Desde && f.Fecha <= Hasta);
+
         }
         else
+        {
             ListaTipoTecnicos = await tiposTecnicosService.Listar(e => e.TiposTecnicosId > 0);
+        }
     }
 
     private async Task Restablecer()
@@ -149,5 +156,7 @@
         ListaTipoTecnicos = await tiposTecnicosService.Listar(e => e.TiposTecnicosId > 0);
         Filtro = string.Empty;
         ValorFiltro = string.Empty;
+        Desde = null;
+        Hasta = null;
     }
 }

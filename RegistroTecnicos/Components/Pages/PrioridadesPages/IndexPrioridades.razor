@@ -30,6 +30,7 @@
                         <option value="" selected disabled>Elija una opci&oacute;n</option>
                         <option value="Descripcion">Descripcion</option>
                         <option value="Tiempo">Tiempo</option>
+                        <option value="Fecha">Fecha</option>
                     </InputSelect>
                 </div>
 
@@ -125,20 +126,19 @@
         {
             if(Filtro == "Descripcion")
             {
-                ListaPrioridades = await prioridadesService.Listar(e => e.Descripcion.ToLower().Contains(ValorFiltro.ToLower()));
+                ListaPrioridades = await prioridadesService.Listar(e => e.Descripcion.ToLower().Contains(ValorFiltro.ToLower()) && e.Fecha >= Desde && e.Fecha <= Hasta);
             }
             else if (Filtro == "Tiempo" && int.TryParse(ValorFiltro, out int tiempo))
             {
                 ListaPrioridades = await prioridadesService.Listar(e => e.Tiempo == tiempo);
 
             }
-            else if (Filtro == "Fecha")
-            {
-                    ListaPrioridades = await prioridadesService
-                    .Listar(f => f.Fecha >= Desde && f.Fecha <= Hasta);
-            }
-            
 
+        }
+        else if(Filtro == "Fecha")
+            {
+            ListaPrioridades = await prioridadesService
+            .Listar(f => f.Fecha >= Desde && f.Fecha <= Hasta);
         }
         else
         {
