@@ -14,4 +14,7 @@ public class Clientes
     [Required(ErrorMessage ="Campo obligatorio")]
     [RegularExpression(@"^\d+$", ErrorMessage ="Solo se permiten numeros enteros")]
     public string? WhatsApp { get; set; }
+
+    [Required(ErrorMessage = "Campo obligatorio")]
+    public DateTime Fecha { get; set; } = DateTime.Now;
 }

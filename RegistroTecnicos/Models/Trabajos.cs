@@ -19,17 +19,17 @@ public class Trabajos
     [RegularExpression(@"^\d+(\.\d+)?$", ErrorMessage = "Solo se permiten numeros enteros o decimales")]
     public double Monto { get; set; }
 
-    [ForeignKey("Clientes")]
+    [ForeignKey("Cliente")]
     public int ClienteId { get; set; }
-    public Clientes Cliente { get; set; }
+    public Clientes? Cliente { get; set; }
 
-    [ForeignKey("Tecnicos")]
+    [ForeignKey("Tecnico")]
     public int TecnicoId { get; set; }
-    public Tecnicos Tecnico { get; set; }
+    public Tecnicos? Tecnico { get; set; }
 
-    [ForeignKey("Prioridades")]
+    [ForeignKey("Prioridad")]
     public int PrioridadId { get;set; }
-    public Prioridades Prioridad { get; set; }
+    public Prioridades? Prioridad { get; set; }
 
     [ForeignKey("TrabajoId")]
     public ICollection<TrabajosDetalle> TrabajosDetalle { get; set; } = new List<TrabajosDetalle>();

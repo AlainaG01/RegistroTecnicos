@@ -3,14 +3,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RegistroTecnicos.Models;
 
-public class TrabajosDetalle
+public class CotizacionesDetalle
 {
     [Key]
     public int DetalleId { get; set; }
 
-    [ForeignKey("Trabajo")]
-    public int TrabajoId { get; set; }
-    public Trabajos? Trabajo { get; set; }
+    [ForeignKey("Cotizacion")]
+    public int CotizacionId { get; set; }
+    public Cotizaciones? Cotizacion { get; set; }
 
     [ForeignKey("Articulo")]
     public int ArticuloId { get; set; }
@@ -20,8 +20,5 @@ public class TrabajosDetalle
     public int Cantidad { get; set; }
 
     [Required(ErrorMessage = "Campo obligatorio")]
-    public double Precio { get; set; }
-
-    [Required(ErrorMessage = "Campo obligatorio")]
-    public double Costo { get; set; }
+    public double Precio {  get; set; }
 }

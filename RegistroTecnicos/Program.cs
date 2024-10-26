@@ -10,8 +10,8 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 //Inyeccion del contexto
-var ConStr = builder.Configuration.GetConnectionString("ConStr");
-builder.Services.AddDbContext<Contexto>(o => o.UseSqlite(ConStr));
+var ConStr = builder.Configuration.GetConnectionString("SqlConStr");
+builder.Services.AddDbContextFactory<Contexto>(o => o.UseSqlServer(ConStr));
 
 //Inyeccion del servicio
 builder.Services.AddScoped<TecnicosService>();
@@ -20,6 +20,8 @@ builder.Services.AddScoped<ClientesService>();
 builder.Services.AddScoped<TrabajosService>();
 builder.Services.AddScoped<PrioridadesService>();
 builder.Services.AddScoped<TrabajosDetalleService>();
+builder.Services.AddScoped<CotizacionesService>();
+builder.Services.AddScoped<CotizacionesDetalleService>();
 
 var app = builder.Build();
 

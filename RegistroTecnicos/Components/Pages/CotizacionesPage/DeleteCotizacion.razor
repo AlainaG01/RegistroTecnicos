@@ -1,0 +1,91 @@
+﻿@page "/Tecnicos/Cotizacion/Delete/{CotizacionId:int}"
+
+@inject CotizacionesService cotizacionesService
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+
+@*HTML*@
+<PageTitle>Delete</PageTitle>
+<div class="container">
+    <div class="shadow-lg">
+        @*header*@
+        <div class="card-header text-center">
+            <h3><strong>Eliminar Cotizacion</strong></h3>
+        </div>
+
+        @*body*@
+        <div class="card-body">
+            <div class="text-center">
+                <h4><strong>¿Desea eliminar esta cotizacion?</strong></h4>
+            </div>
+            <ul>
+                <li><strong>CotizacionId: </strong>@Cotizacion.CotizacionId</li>
+                <li><strong>Fecha: </strong>@Cotizacion.Fecha</li>
+                <li><strong>ClienteId: </strong>@Cotizacion.ClienteId</li>
+                <li><strong>Cliente: </strong>@Cotizacion.Cliente?.Nombres</li>
+                <li><strong>Observacion: </strong>@Cotizacion.Observacion</li>
+                <li><strong>Monto: </strong>@Cotizacion.Monto</li>
+            </ul>
+            <div class="border border-success p-2 mt-2">
+                <h5>Detalles de articulos Cotizados</h5>
+                <div>
+                    <table class="table table-light">
+                        <thead class="table-striped">
+                            <tr class="text-center">
+                                <th>Artículo</th>
+                                <th>Cantidad</th>
+                                <th>Precio</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var Detalle in Cotizacion.cotizacionesDetalle)
+                            {
+                                <tr class="text-center">
+                                    <td>@Detalle.ArticuloId</td>
+                                    <td>@Detalle.Cantidad</td>
+                                    <td>@Detalle.Precio</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*Footer*@
+    <div class="card-footer text-center">
+        <a href="/Tecnicos/Cotizacion/Index" class="btn btn-secondary"> <span class="bi bi-arrow-left"></span> Volver</a>
+        <button type="submit" class="btn btn-danger bi bi-trash" @onclick="Eliminar"></button>
+    </div>
+</div>
+
+@Mensaje
+
+@code {
+    [Parameter]
+    public int CotizacionId { get; set; }
+
+    public Cotizaciones Cotizacion { get; set; } = new Cotizaciones();
+
+    public string Mensaje { get; set; } = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Cotizacion = await cotizacionesService.BuscarConDetalles(CotizacionId);
+    }
+
+    public async Task Eliminar()
+    {
+        var eliminado = await cotizacionesService.Eliminar(Cotizacion.CotizacionId);
+
+        if (eliminado)
+        {
+            Mensaje = "La cotizacion a sido eliminado correctamente";
+            navigationManager.NavigateTo("/Tecnicos/Cotizacion/Index");
+        }
+        else
+        {
+            Mensaje = "La cotizacion no a sido eliminado correctamente";
+        }
+    }
+}
