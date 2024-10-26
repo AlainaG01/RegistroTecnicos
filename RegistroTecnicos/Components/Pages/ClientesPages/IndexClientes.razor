@@ -139,7 +139,7 @@
         if(ValorFiltro.Trim() != "")
         {
             if (Filtro == "Nombres")
-                ListaClientes = await clientesService.Listar(e => e.Nombres.ToLower().Contains(ValorFiltro.ToLower()) && e.Fecha >= Desde && e.Fecha <= Hasta));
+                ListaClientes = await clientesService.Listar(e => e.Nombres.ToLower().Contains(ValorFiltro.ToLower()) && e.Fecha >= Desde && e.Fecha <= Hasta);
         }
         else if (Filtro == "Fecha")
         {
