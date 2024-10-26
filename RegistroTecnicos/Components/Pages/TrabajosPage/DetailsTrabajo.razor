@@ -19,12 +19,12 @@
             <ul class="mt-5">
                 <li><strong>TrabajoId: </strong>@Trabajo.TrabajoId</li>
                 <li><strong>Fecha: </strong>@Trabajo.Fecha</li>
-                <li><strong>Cliente: </strong>@Trabajo.Cliente.Nombres</li>
-                <li><strong>Tecnico: </strong>@Trabajo.Tecnico.Nombres</li>
+                <li><strong>Cliente: </strong>@Trabajo.Cliente?.Nombres</li>
+                <li><strong>Tecnico: </strong>@Trabajo.Tecnico?.Nombres</li>
                 <li><strong>Descripci&oacute;n: </strong>@Trabajo.Descripcion</li>
-                <li><strong>PrioridadId: </strong>@Trabajo.Prioridad.PrioridadesId</li>
-                <li><strong>Prioridad Descripcion: </strong>@Trabajo.Prioridad.Descripcion</li>
-                <li><strong>Prioridad Tiempo: </strong>@Trabajo.Prioridad.Tiempo</li>
+                <li><strong>PrioridadId: </strong>@Trabajo.Prioridad?.PrioridadesId</li>
+                <li><strong>Prioridad Descripcion: </strong>@Trabajo.Prioridad?.Descripcion</li>
+                <li><strong>Prioridad Tiempo: </strong>@Trabajo.Prioridad?.Tiempo</li>
                 <li><strong>Monto: </strong>@Trabajo.Monto</li>
             </ul>
             <div class="border border-success p-2 mt-2">
@@ -34,7 +34,7 @@
                     {
                         <li class="mt-2">
                             Articulo ID: @detalle.ArticuloId -- @detalle.Articulo?.Descripcion -- Cantidad: @detalle.Cantidad
-                            -- Precio:$ @detalle.Articulo.Precio -- PrecioTotal: $ @detalle.Precio
+                            -- Precio:$ @detalle.Articulo?.Precio -- PrecioTotal: $ @detalle.Precio
                         </li>
                     }
                 </ul>

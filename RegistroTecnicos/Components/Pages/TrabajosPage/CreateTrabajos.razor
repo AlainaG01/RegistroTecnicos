@@ -1,6 +1,7 @@
 ﻿@page "/Tecnicos/Trabajos/Create"
 
 @inject TrabajosService trabajosService
+@inject TrabajosDetalleService trabajoDetalleService
 @inject TecnicosService tecnicoService
 @inject ClientesService clienteService
 @inject PrioridadesService prioridadesService
@@ -89,12 +90,36 @@
                                  @bind-Value="Trabajo.Monto"></InputNumber>
                     <ValidationMessage For="(()=> Trabajo.Monto)" />
                 </div>
-                
+
+                @*detalle*@
+                <div class="border border-success p-3 mt-3">
+                    <h5>Detalles de articulos utilizados</h5>
+
+                    <div class="row">
+                        <div class="col-auto">
+                            <SeleccionarArticulo ListaArticulo="ListaArticulos"
+                                                 ArticuloId="Detalle.ArticuloId"
+                                                 Cantidad="Detalle.Cantidad"
+                                                 Precio="Detalle.Precio"
+                                                 ArticuloSeleccionado="AgregarDetalle" />
+                        </div>
+                    </div>
+                    <ul class="mt-3">
+                        @foreach (var detalle in Trabajo.TrabajosDetalle)
+                        {
+                            <li class="mt-2">
+                                Articulo ID: @detalle.ArticuloId -- @detalle.Articulo?.Descripcion -- Cantidad: @detalle.Cantidad
+                                -- Precio:$ @detalle.Articulo?.Precio -- PrecioTotal: $ @detalle.Precio
+                                <button type="button" @onclick="() => Eliminar(detalle)" class="btn btn-outline-danger btn-sm ms-2 bi bi-trash"></button>
+                            </li>
+                        }
+                    </ul>
+                </div>
             </div>
             @*Footer*@
             <div class="card-footer text-center mt-2">
                 <a href="/Tecnicos/Trabajos/Index" class="btn btn-secondary"> <span class="bi bi-arrow-left"></span> Volver</a>
-                <button type="submit" class="btn btn-success">Siguiente</button>
+                <button type="submit" class="btn btn-success bi bi-floppy-fill">Guardar</button>
 
             </div>
         </div>
@@ -106,16 +131,18 @@
     public Trabajos Trabajo { get; set; } = new Trabajos();
 
     public string Mensaje { get; set; } = string.Empty;
-
+    public TrabajosDetalle Detalle { get; set; } = new TrabajosDetalle();
     public List<Clientes> ListaClientes { get; set; } = new List<Clientes>();
     public List<Tecnicos> ListaTecnicos { get; set; } = new List<Tecnicos>();
     public List<Prioridades> ListaPrioridades { get; set; } = new List<Prioridades>();
+     public List<Articulos> ListaArticulos { get; set; } = new List<Articulos>();
 
     protected override async Task OnInitializedAsync()
     {
         ListaClientes = await clienteService.Listar(e => e.ClienteId > 0);
         ListaTecnicos = await tecnicoService.Listar(t => t.TecnicoId > 0);
         ListaPrioridades = await prioridadesService.Listar(p => p.PrioridadesId > 0);
+        ListaArticulos = await trabajoDetalleService.Listar(a => a.ArticuloId > 0);
     }
 
     public void Volver()
@@ -127,6 +154,31 @@
     {
         var valido = await trabajosService.ExisteTrabajo(Trabajo.TrabajoId);
         return valido;
+    }
+
+    private async Task AgregarDetalle((Articulos articulos, int Cantidad) selection)
+    {
+        var ArticuloExiste = Trabajo.TrabajosDetalle.FirstOrDefault(A => A.ArticuloId == selection.articulos.ArticuloId);
+        if(ArticuloExiste != null)
+        {
+            ArticuloExiste.Cantidad += selection.Cantidad;
+            ArticuloExiste.Costo = ArticuloExiste.Articulo.Costo * ArticuloExiste.Cantidad;
+            ArticuloExiste.Precio = ArticuloExiste.Articulo.Precio * ArticuloExiste.Cantidad;
+        }
+        else
+        {
+            var TrabajoDetalle = new TrabajosDetalle
+                {
+                    ArticuloId = selection.articulos.ArticuloId,
+                    Cantidad = selection.Cantidad,
+                    Costo = selection.articulos.Costo * selection.Cantidad,
+                    Precio = selection.articulos.Precio * selection.Cantidad,
+                };
+           
+            Trabajo.TrabajosDetalle.Add(TrabajoDetalle);
+            Detalle = new TrabajosDetalle();
+            await Task.CompletedTask;
+        }
     }
 
     private async Task Guardar()
@@ -142,12 +194,19 @@
         if (crear)
         {
             Mensaje = "Se ha creado correctamente el trabajo";
-            navigationManager.NavigateTo($"/Tecnicos/Trabajos/Detalle/{Trabajo.TrabajoId}");
+            navigationManager.NavigateTo("/Tecnicos/Trabajos/Index");
         }
         else
         {
             Mensaje = "No se ha creado correctamente el trabajo";
         }
 
+    }
+
+    public async Task Eliminar(TrabajosDetalle detalle)
+    {
+        Trabajo.TrabajosDetalle.Remove(detalle);
+        Detalle.Cantidad = detalle.Cantidad;
+        Detalle.ArticuloId = detalle.ArticuloId;
     }
 }

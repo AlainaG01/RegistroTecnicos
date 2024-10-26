@@ -101,11 +101,11 @@
                             <td>@trabajo.TrabajoId</td>
                             <td>@trabajo.Fecha</td>
                             <td>@trabajo.Cliente.ClienteId</td>
-                            <td>@trabajo.Cliente.Nombres</td>
+                            <td>@trabajo.Cliente?.Nombres</td>
                             <td>@trabajo.Tecnico.TecnicoId</td>
-                            <td>@trabajo.Tecnico.Nombres</td>
+                            <td>@trabajo.Tecnico?.Nombres</td>
                             <td>@trabajo.Descripcion</td>
-                            <td>@trabajo.Prioridad.Descripcion</td>
+                            <td>@trabajo.Prioridad?.Descripcion</td>
                             <td>@trabajo.Monto</td>
 
                             <td>
