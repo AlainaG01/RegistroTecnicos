@@ -172,7 +172,7 @@
     private async Task AgregarArticulo((Articulos articulos, int cantidad) selection)
     {
 
-        await LimpiarMensaje();
+        LimpiarMensaje();
 
         var articuloExistente = Trabajo.TrabajosDetalle
             .FirstOrDefault(d => d.ArticuloId == selection.articulos.ArticuloId);
@@ -202,7 +202,7 @@
         await Task.CompletedTask;
     }
 
-    public async Task Eliminar(TrabajosDetalle detalle)
+    public void Eliminar(TrabajosDetalle detalle)
     {
         Trabajo.TrabajosDetalle.Remove(detalle);
        
@@ -210,7 +210,7 @@
         TrabajoDetalle.ArticuloId = detalle.ArticuloId;
     }
 
-    public async Task LimpiarMensaje()
+    public void LimpiarMensaje()
     {
         Mensaje = string.Empty;
     }

@@ -203,7 +203,7 @@
 
     }
 
-    public async Task Eliminar(TrabajosDetalle detalle)
+    public void Eliminar(TrabajosDetalle detalle)
     {
         Trabajo.TrabajosDetalle.Remove(detalle);
         Detalle.Cantidad = detalle.Cantidad;

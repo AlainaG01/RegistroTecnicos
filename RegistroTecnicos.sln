@@ -5,6 +5,8 @@ VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegistroTecnicos", "RegistroTecnicos\RegistroTecnicos.csproj", "{C2A2175C-11BC-4534-8F0D-5213BF72BFFA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegistroTecnicos.Api", "RegistroTecnicos.Api\RegistroTecnicos.Api.csproj", "{D69F5D28-9162-400F-B1B5-3DD31735CBA6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{C2A2175C-11BC-4534-8F0D-5213BF72BFFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2A2175C-11BC-4534-8F0D-5213BF72BFFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2A2175C-11BC-4534-8F0D-5213BF72BFFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D69F5D28-9162-400F-B1B5-3DD31735CBA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D69F5D28-9162-400F-B1B5-3DD31735CBA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D69F5D28-9162-400F-B1B5-3DD31735CBA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D69F5D28-9162-400F-B1B5-3DD31735CBA6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

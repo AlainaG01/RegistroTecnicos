@@ -73,8 +73,18 @@
 
     private async Task<bool> Validar()
     {
-        var valido = await clientesService.ExisteCliente(Cliente.ClienteId, Cliente.Nombres);
-        return valido;
+
+        if (Cliente != null)
+        {
+            var valido = await clientesService.ExisteCliente(Cliente.ClienteId, Cliente.Nombres);
+            return valido;
+        }
+        else
+        {
+            Mensaje = "Cliente es null";
+            return false;
+        }
+        
     }
 
     private async Task Guardar()
