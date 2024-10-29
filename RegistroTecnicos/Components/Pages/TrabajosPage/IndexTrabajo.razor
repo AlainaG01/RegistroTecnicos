@@ -37,7 +37,7 @@
                 @*filtro*@
                 <div class="col-3">
                     <InputSelect class="form-select" @bind-Value="Filtro">
-                        <option value="" selected disabled>Elija una opci&oacute;n</option>
+                        <option value="0" selected disabled>Elija una opci&oacute;n</option>
                         <option value="Prioridad">Prioridad</option>
                         <option value="Descripcion">Descripcion</option>
                         <option value="Fecha">Fecha</option>
@@ -100,9 +100,9 @@
                         <tr>
                             <td>@trabajo.TrabajoId</td>
                             <td>@trabajo.Fecha</td>
-                            <td>@trabajo.Cliente.ClienteId</td>
+                            <td>@trabajo.Cliente?.ClienteId</td>
                             <td>@trabajo.Cliente?.Nombres</td>
-                            <td>@trabajo.Tecnico.TecnicoId</td>
+                            <td>@trabajo.Tecnico?.TecnicoId</td>
                             <td>@trabajo.Tecnico?.Nombres</td>
                             <td>@trabajo.Descripcion</td>
                             <td>@trabajo.Prioridad?.Descripcion</td>
@@ -137,14 +137,14 @@
     public List<Trabajos> ListaTrabajos { get; set; } = new List<Trabajos>();
     public string Filtro { get; set; } = string.Empty;
     public string ValorFiltro { get; set; } = string.Empty;
-    public DateTime? Desde { get; set; }
-    public DateTime? Hasta { get; set; }
+    public DateTime Desde { get; set; }
+    public DateTime Hasta { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         ListaTrabajos = await trabajosService.Listar(e => e.TrabajoId > 0);
-        Desde = null;
-        Hasta = null;
+        Desde = DateTime.Now;
+        Hasta = DateTime.Now;
     }
 
     private async Task Buscar()
@@ -153,11 +153,11 @@
         {
             if(Filtro == "Descripcion")
             {
-                ListaTrabajos = await trabajosService.Listar(e => e.Descripcion.ToLower().Contains(ValorFiltro.ToLower()) && e.Fecha >= Desde && e.Fecha <= Hasta);
+                ListaTrabajos = await trabajosService.Listar(e => e.Descripcion != null && e.Descripcion.ToLower().Contains(ValorFiltro.ToLower()) && e.Fecha >= Desde && e.Fecha <= Hasta);
             }
             else if (Filtro == "Prioridad")
             {
-                ListaTrabajos = await trabajosService.Listar(e => e.Prioridad.Descripcion.ToLower().Contains(ValorFiltro.ToLower()) && e.Fecha >= Desde && e.Fecha <= Hasta);
+                ListaTrabajos = await trabajosService.Listar(e => e.Prioridad != null && e.Prioridad.Descripcion != null && e.Prioridad.Descripcion.ToLower().Contains(ValorFiltro.ToLower()) && e.Fecha >= Desde && e.Fecha <= Hasta);
             }
         }
         else if (Filtro == "Fecha")

@@ -37,7 +37,7 @@
                 @*filtro*@
                 <div class="col-3">
                     <InputSelect class="form-select" @bind-Value="Filtro">
-                        <option value="" selected disabled>Elija una opci&oacute;n</option>
+                        <option value="0" selected disabled>Elija una opci&oacute;n</option>
                         <option value="Nombres">Nombres</option>
                         <option value="Fecha">Fecha</option>
                     </InputSelect>
@@ -123,15 +123,15 @@
     public string Filtro { get; set; } = string.Empty;
     public string ValorFiltro { get; set; } = string.Empty;
 
-    public DateTime? Desde { get; set; }
+    public DateTime Desde { get; set; }
 
-    public DateTime? Hasta { get; set; }
+    public DateTime Hasta { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         ListaClientes = await clientesService.Listar(e => e.ClienteId > 0);
-        Desde = null;
-        Hasta = null;
+        Desde = DateTime.Now;
+        Hasta = DateTime.Now;
     }
 
     private async Task Buscar()
@@ -139,7 +139,7 @@
         if(ValorFiltro.Trim() != "")
         {
             if (Filtro == "Nombres")
-                ListaClientes = await clientesService.Listar(e => e.Nombres.ToLower().Contains(ValorFiltro.ToLower()) && e.Fecha >= Desde && e.Fecha <= Hasta);
+                ListaClientes = await clientesService.Listar(e => e.Nombres != null && e.Nombres.ToLower().Contains(ValorFiltro.ToLower()) && e.Fecha >= Desde && e.Fecha <= Hasta);
         }
         else if (Filtro == "Fecha")
         {
